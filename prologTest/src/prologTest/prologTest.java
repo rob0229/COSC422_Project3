@@ -1,13 +1,12 @@
 package prologTest;
-import com.declarativa.interprolog.*;
-import com.xsb.interprolog.*;
+import com.declarativa.interprolog.XSBSubprocessEngine;
 public class prologTest{
 	
   public static void main(String args[]) {
 	  
 	  System.out.println("here");
 	  
-	  XSBSubprocessEngine engine = new XSBSubprocessEngine("/Developer/XSB/config/i386-apple-darwin14.1.0/bin");
+	  XSBSubprocessEngine engine = new XSBSubprocessEngine(args[0]);
 	  System.out.println("here2");
 	  engine.command("import append/3 from basics");
 	  
@@ -28,14 +27,14 @@ public class prologTest{
   
 }
 
-
+//
 //import com.declarativa.interprolog.XSBSubprocessEngine;
 //
 //public class prologTest {
 //	
 //	public static void main(String args[]){
 //	
-//		XSBSubprocessEngine engine = new XSBSubprocessEngine("/Developer/XSB/config/i386-apple-darwin14.1.0/bin");
+//		XSBSubprocessEngine engine = new XSBSubprocessEngine("C:\\Users\\Rob\\XSB");
 //		if (engine.deterministicGoal("writeln('Hello, Prolog world'), javaMessage('java.lang.System'-out,println(string('Hello, Java world!')))"))
 //			System.out.println("This goal succeeded");
 //		System.out.println(System.getProperty("user.name"));
