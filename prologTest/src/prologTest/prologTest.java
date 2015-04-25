@@ -1,4 +1,6 @@
 package prologTest;
+import java.io.File;
+
 import com.declarativa.interprolog.XSBSubprocessEngine;
 public class prologTest{
 	
@@ -13,7 +15,8 @@ public class prologTest{
 	  Object[] bindings = engine.deterministicGoal("name(User,UL),append(\"Hello,\", UL, ML), name(Message,ML)","[string(User)]",new Object[]{System.getProperty("user.name")},"[string(Message)]");
 	 
 	  String message = (String)bindings[0];
-	  
+	  engine.consultAbsolute(new File("like.pl"));
+	  System.out.println(engine.deterministicGoal("likes(rob,beer)"));
 	  System.out.println("\nMessage:"+message);
 	  
 	  // the above demonstrates object passing both ways; 
