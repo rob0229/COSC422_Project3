@@ -10,3 +10,7 @@ bike(harley_davidson).
 red(vw_beatle).
 red(ford_escort).
 blue(harley_davidson).
+
+likes(X) :- rob(X).
+rob(beer).
+rob(money).

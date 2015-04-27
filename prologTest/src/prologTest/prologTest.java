@@ -1,5 +1,10 @@
 package prologTest;
 
+//Robs Mac run Config args: "/Developer/XSB/config/i386-apple-darwin14.1.0/bin"
+//Robs Windows run config args: " "
+//Kevins Run Config args: ""
+
+
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.Color;
@@ -15,11 +20,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import com.declarativa.interprolog.*;
+
 import com.declarativa.interprolog.PrologEngine;
-import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
-import com.xsb.interprolog.NativeEngine;
 
 public class prologTest extends JPanel {
 	
@@ -44,7 +47,7 @@ public class prologTest extends JPanel {
 	 }
 	
 	//init control method
-	public void init(String args[]){
+	public void init(final String args[]){
 		submit.setBounds(130, 100, 100, 40);
 		containerPanel.setBackground(new Color(255, 255, 255));
 		
@@ -140,8 +143,8 @@ public class prologTest extends JPanel {
 		System.out.println(choice);
 		PrologEngine engine = new XSBSubprocessEngine(args[0]);
 		engine.consultAbsolute(new File("like.pl"));
-		 engine.command("import append/3 from basics");
-		Object[] bindings = engine.deterministicGoal("fun(X)","[string(X)]");
+		//engine.command("import append/3 from basics");
+		Object[] bindings = engine.deterministicGoal("likes(X)","[string(X)]");
 		
 		 String message = (String)bindings[0];
 		  System.out.println("\nMessage:"+message);
@@ -180,8 +183,9 @@ public class prologTest extends JPanel {
 		System.out.println(result);
 	}
 	
-	public static void main(String args[]) {
+public static void main(String args[]) {
 
+		final String[] arg = args;
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -204,34 +208,9 @@ public class prologTest extends JPanel {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new prologTest(args).setVisible(true);
+				new prologTest(arg).setVisible(true);
 			}
 		});
-	}
-
-	
-	
-	
+}	
 }
-//engine.command("import append/3 from basics");
-//
-//Object[] bindings = engine.deterministicGoal(
-//		"name(User,UL),append(\"Hello,\", UL, ML), name(Message,ML)",
-//		"[string(User)]",
-//		new Object[] { System.getProperty("user.name") },
-//		"[string(Message)]");
-//
-//String message = (String) bindings[0];
-//System.out.println("\nMessage:" + message);
-
-// the above demonstrates object passing both ways;
-// since we may simply concatenate strings, an alternative coding would
-// be:
-//bindings = engine.deterministicGoal(
-//		"name('" + System.getProperty("user.name")
-//				+ "',UL),append(\"Hello,\", UL, ML), name(Message,ML)",
-//		"[string(Message)]");
-//// (notice the ' surrounding the user name, unnecessary in the first
-//// case)
-//System.out.println("Same:" + bindings[0]);
 
