@@ -1,7 +1,7 @@
 package prologTest;
 
 //Robs Mac run Config args: "/Developer/XSB/config/i386-apple-darwin14.1.0/bin"
-//Robs Windows run config args: " "
+//Robs Windows run config args: ""C:\\Users\\Rob\\Developer\\Studio_with_XSB-Windows\\fijiXSB\\bin""
 //Kevins Run Config args: ""
 
 
@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.declarativa.interprolog.PrologEngine;
+import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
 
 public class prologTest extends JPanel {
@@ -140,47 +141,25 @@ public class prologTest extends JPanel {
 		System.out.println("Clicked submit");
 		Boolean fact = false;
 		String choice =choices.getSelectedCheckbox().getLabel();
-		System.out.println(choice);
+		//System.out.println(choice);
 		PrologEngine engine = new XSBSubprocessEngine(args[0]);
 		engine.consultAbsolute(new File("like.pl"));
-		//engine.command("import append/3 from basics");
-		Object[] bindings = engine.deterministicGoal("likes(X)","[string(X)]");
 		
-		 String message = (String)bindings[0];
-		  System.out.println("\nMessage:"+message);
+		//returns true/false boolean
+		//boolean result = engine.command("male(pat)");
+		//System.out.println("result "+result);
 		
-		
-//		Object[] bindings = engine.deterministicGoal("fun(X), fun(harley_davidson), buildTermModel(List,TM)","[TM]"); 
-//		TermModel list = (TermModel)bindings[0]; 
-//		System.out.println("Here is the result:"+list); 
-//		 System.out.println( list.getChildCount());
-//		if (list.isList()) { 
-//			  // Visit the list using getChild(0) (for head) and getChild(1) (for tail)
-//			 System.out.println( list.getChild(0));
-//		}
-		
-		
-		//Object[] bindings = engine.deterministicGoal("likes(P)","[]" ); 
+		Object[] res = engine.deterministicGoal(" rob(List), buildTermModel(List,TM)","[TM]"); 
 
-		//System.out.println("here");
-		//System.out.println(bindings);
-//		String[] list = (String[])bindings[0]; 
-//		System.out.println("Here is the list of Strings:"); 
-//		for (int i=0;i<list.length;i++) 
-		 // System.out.println(list[i]); 
+		TermModel list = (TermModel)res[0]; 
+		System.out.println("Here is the result:"+list); 
+		 System.out.println( list.getChildCount());
+		if (list.isList()) { 
+			// Visit the list using getChild(0) (for head) and getChild(1) (for tail)/			 
+			System.out.println( list.getChild(0));
+			System.out.println( list.getChild(1));
+		}
 		
-//		String query = "likes("+choice+")";
-//		System.out.println(query);
-//		System.out.println(engine.deterministicGoal("likes(P)"));
-//		fact = engine.deterministicGoal(query);
-//		System.out.println(fact);
-		
-		if(fact == true)
-			result = "Yes! ";
-		else 
-			result = "No! ";
-		answerLabel.setText(result);
-		System.out.println(result);
 	}
 	
 public static void main(String args[]) {
