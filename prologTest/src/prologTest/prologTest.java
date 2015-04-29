@@ -146,8 +146,14 @@ public class prologTest extends JPanel {
 		engine.consultAbsolute(new File("like.pl"));
 		
 		//returns true/false boolean
-		//boolean result = engine.command("male(pat)");
-		//System.out.println("result "+result);
+		boolean result = engine.command("likes("+choice+")");
+		System.out.println("Choice is: "+choice);
+		System.out.println("result: "+result);
+		
+		if(result)
+			answerLabel.setText("Yes he does!");
+		else
+			answerLabel.setText("No he doesn't!");
 		
 		Object[] res = engine.deterministicGoal(" rob(List), buildTermModel(List,TM)","[TM]"); 
 
