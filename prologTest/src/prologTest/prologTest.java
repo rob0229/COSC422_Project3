@@ -31,8 +31,8 @@ public class prologTest extends JPanel {
 	JFrame frame = new JFrame("Computer Science Class Scheduler");
 	JPanel containerPanel = new JPanel();
 	JPanel questionsPanel = new JPanel();
-	JPanel selectionPanel = new JPanel();
-	JLabel question = new JLabel("Does Rob Like: ");
+	JPanel optionsPanel = new JPanel();
+	JLabel question = new JLabel("Enter a class to see its pre-reqs: ");
 	JPanel answerPanel = new JPanel();
 	JLabel answerLabel = new JLabel(answer);
 	CheckboxGroup choices = new CheckboxGroup();
@@ -60,14 +60,14 @@ public class prologTest extends JPanel {
 		containerPanelLayout.setHorizontalGroup(containerPanelLayout
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addComponent(questionsPanel)
-				.addComponent(selectionPanel)
+				.addComponent(optionsPanel)
 				.addComponent(submit)
 				.addComponent(answerPanel)
 				);
 		containerPanelLayout.setVerticalGroup(containerPanelLayout
 				.createSequentialGroup()
 				.addComponent(questionsPanel)
-				.addComponent(selectionPanel)
+				.addComponent(optionsPanel)
 				.addComponent(submit)
 				.addComponent(answerPanel)
 				);
@@ -93,8 +93,8 @@ public class prologTest extends JPanel {
 				.createSequentialGroup().addComponent(answerLabel));		
 		
 		//Check box layout
-		javax.swing.GroupLayout selectionPanelLayout = new GroupLayout(selectionPanel);
-		selectionPanel.setLayout(selectionPanelLayout);
+		javax.swing.GroupLayout selectionPanelLayout = new GroupLayout(optionsPanel);
+		optionsPanel.setLayout(selectionPanelLayout);
 		selectionPanelLayout.setAutoCreateGaps(true);
 		selectionPanelLayout.setAutoCreateContainerGaps(true);
 		selectionPanelLayout.setHorizontalGroup(selectionPanelLayout
@@ -154,8 +154,8 @@ public class prologTest extends JPanel {
 			answerLabel.setText("Yes he does!");
 		else
 			answerLabel.setText("No he doesn't!");
-		
-		Object[] res = engine.deterministicGoal(" rob(List), buildTermModel(List,TM)","[TM]"); 
+		String exp = "cosc350";
+		Object[] res = engine.deterministicGoal(" prereq("+exp+", List), buildTermModel(List,TM)","[TM]"); 
 
 		TermModel list = (TermModel)res[0]; 
 		System.out.println("Here is the result:"+list); 
