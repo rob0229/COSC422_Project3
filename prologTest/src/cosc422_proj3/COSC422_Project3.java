@@ -1,8 +1,8 @@
-package prologTest;
+package cosc422_proj3;
 
 //Robs Mac run Config args: "/Developer/XSB/config/i386-apple-darwin14.1.0/bin"
 //Robs Windows run config args: ""C:\\Users\\Rob\\Developer\\Studio_with_XSB-Windows\\fijiXSB\\bin""
-//Kevins Run Config args: ""
+//Kevins Run Config args: ""C:\\Program Files (x86)\\XSB\\bin""
 
 
 import java.awt.Checkbox;
@@ -25,8 +25,8 @@ import com.declarativa.interprolog.PrologEngine;
 import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
 
-public class prologTest extends JPanel {
-	
+public class COSC422_Project3 extends JPanel {
+	PrologEngine engine;
 	String answer = "Select an answer and click submit";
 	JFrame frame = new JFrame("Computer Science Class Scheduler");
 	JPanel containerPanel = new JPanel();
@@ -43,12 +43,8 @@ public class prologTest extends JPanel {
 	JButton submit = new JButton("Submit");
 	String result;
 	//constructor
-	 public prologTest(String args[]){
-		 init(args);
-	 }
-	
-	//init control method
-	public void init(final String args[]){
+	 public COSC422_Project3(PrologEngine e){
+		engine=e;
 		submit.setBounds(130, 100, 100, 40);
 		containerPanel.setBackground(new Color(255, 255, 255));
 		
@@ -119,7 +115,7 @@ public class prologTest extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 submitButtonActionPerformed(e, args);
+				 submitButtonActionPerformed(e);
 			}
 	
 		});
@@ -137,40 +133,49 @@ public class prologTest extends JPanel {
 	}
 	
 	//Submit Button Listener
-	public void submitButtonActionPerformed(ActionEvent evt, String args[]){
+	public void submitButtonActionPerformed(ActionEvent evt){
+		String coursePath = "courseNames.txt";
+		String prereqpath = "coursePreReq.txt";
+		
+		String[] courses;
 		System.out.println("Clicked submit");
 		Boolean fact = false;
 		String choice =choices.getSelectedCheckbox().getLabel();
-		//System.out.println(choice);
-		PrologEngine engine = new XSBSubprocessEngine(args[0]);
+		
 		engine.consultAbsolute(new File("like.pl"));
+		File filetoopen = new File(coursePath);
 		
-		//returns true/false boolean
-		boolean result = engine.command("likes("+choice+")");
-		System.out.println("Choice is: "+choice);
-		System.out.println("result: "+result);
-		
-		if(result)
-			answerLabel.setText("Yes he does!");
-		else
-			answerLabel.setText("No he doesn't!");
-		String exp = "cosc350";
-		Object[] res = engine.deterministicGoal(" prereq("+exp+", List), buildTermModel(List,TM)","[TM]"); 
-
-		TermModel list = (TermModel)res[0]; 
-		System.out.println("Here is the result:"+list); 
-		 System.out.println( list.getChildCount());
-		if (list.isList()) { 
-			// Visit the list using getChild(0) (for head) and getChild(1) (for tail)/			 
-			System.out.println( list.getChild(0));
-			System.out.println( list.getChild(1));
-		}
-		
+		filetoopen = new File(prereqpath);
+		if (engine.consultAbsolute(filetoopen)){
+			System.out.println(filetoopen.getAbsolutePath());
+			boolean result = engine.deterministicGoal("getPreReq('"+filetoopen.getAbsolutePath()+"')"); 
+			System.out.println("Did it work? "+result);
+			
+			
+			String exp = "cosc350";
+			TermModel list = nonDeterministicGoal("X","prereq("+exp+", X)"); 
+			
+			if (list==null) 
+				throw new RuntimeException("Prolog getCourses goal should not have failed!");
+			
+			System.out.println("Here is the result:"+list); 
+			 System.out.println( list.getChildCount());
+			if (list.isList()) { 
+				// Visit the list using getChild(0) (for head) and getChild(1) (for tail)/			 
+				System.out.println( list.getChild(0));
+			}	
+		} else throw new RuntimeException("Prolog consult should not have failed!");
+	}
+	
+	public TermModel nonDeterministicGoal(String variables, String goal) {
+		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal + ",ListModel)"; 
+		return (TermModel)(engine.deterministicGoal(fullgoal,"[ListModel]")[0]);
 	}
 	
 public static void main(String args[]) {
 
-		final String[] arg = args;
+	final XSBSubprocessEngine engine = new XSBSubprocessEngine(args[0]);
+		
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
@@ -179,13 +184,13 @@ public static void main(String args[]) {
 				}
 			}
 		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(prologTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(COSC422_Project3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(prologTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(COSC422_Project3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(prologTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(COSC422_Project3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(prologTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+			java.util.logging.Logger.getLogger(COSC422_Project3.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		// </editor-fold>
 
@@ -193,7 +198,7 @@ public static void main(String args[]) {
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new prologTest(arg).setVisible(true);
+				new COSC422_Project3(engine).setVisible(true);
 			}
 		});
 }	

@@ -1,0 +1,25 @@
+:- dynamic course/1.
+course(cosc117).
+course(cosc120).
+course(math201).
+course(math202).
+course(math210).
+course(cosc220).
+course(cosc250).
+course(math293).
+course(cosc320).
+course(cosc330).
+course(cosc350).
+course(cosc362).
+course(cosc370).
+course(cosc386).
+course(cosc420).
+course(cosc422).
+course(cosc425).
+course(cosc426).
+course(cosc432).
+course(cosc450).
+course(cosc456).
+course(math471).
+course(cosc472).
+course(cosc482).
