@@ -1,4 +1,4 @@
-package cosc422_proj3;
+package frontend;
 
 //Robs Mac run Config args: "/Developer/XSB/config/i386-apple-darwin14.1.0/bin"
 //Robs Windows run config args: ""C:\\Users\\Rob\\Developer\\Studio_with_XSB-Windows\\fijiXSB\\bin""
@@ -142,7 +142,7 @@ public class COSC422_Project3 extends JPanel {
 		Boolean fact = false;
 		String choice =choices.getSelectedCheckbox().getLabel();
 		
-		engine.consultAbsolute(new File("like.pl"));
+		engine.consultAbsolute(new File("src/prolog/backend_logic.pl"));
 		File filetoopen = new File(coursePath);
 		
 		filetoopen = new File(prereqpath);
