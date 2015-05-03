@@ -1,18 +1,14 @@
 % Load a puzzle from a text file, and return the specification for a Java object containing it
 getCourses(F) :- load_dyn(F).
 getPreReq(F) :- load_dyn(F).
+getStudent(F) :- load_dyn(F).
 
 %allow Java to access all possible variable values
 nonDeterministicGoal(VarsWanted,G,ListTM) :- findall(VarsWanted,G,L), buildTermModel(L,ListTM).
 
 
-
-
-
-
-
-
-
+takenList([]).
+takenList([H|L]) :- taken(H), takenList(L).
 
 
 %test code

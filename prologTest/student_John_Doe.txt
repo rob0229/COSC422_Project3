@@ -1,0 +1,4 @@
+name('John Doe').
+taken(cosc117).
+taken(cosc120).
+taken(math201). 
