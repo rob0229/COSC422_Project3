@@ -8,15 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-
-import javax.swing.JList;
-
 import com.declarativa.interprolog.PrologEngine;
 import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
-
-
-
 
 public class COSC422_Project3 {
 	final String PROLOGFILE = "src/prolog/backend_logic.pl";
@@ -29,80 +23,57 @@ public class COSC422_Project3 {
 	// constructor
 	public COSC422_Project3(PrologEngine e) {
 		engine = e;
-		
-		String[] courses;
-
 		engine.consultAbsolute(new File(PROLOGFILE));
-
 		getCoursesTaken();
 		getCoursesNeeded();
-		
+
 		dw.addSubmitButtonActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("button clicked");
-				
+				System.out.println("button clicked");	
 			}
 		});
 	}
 
 	private void getCoursesNeeded() {
 		File filetoopen = new File(COURSEPATH);
-
-		System.out.println(filetoopen.getAbsolutePath());
-		boolean result = engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
-		System.out.println("Did it work? " + result);
-
+		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
 		TermModel list = nonDeterministicGoal("X", "course(X)");
-
-		if (list == null)
+		if (list == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
-
-		System.out.println("Here is the result:" + list);
-		System.out.println(list.getChildCount());
+		}
 		if (list.isList()) {
 			// Visit the list using getChild(0) (for head) and getChild(1) (for
 			// tail)
-			System.out.println(list.getChild(0));
+			dw.setCoursesNeeded(convertTermModeltoArrayList(list));
 		}
-		dw.setCoursesNeeded(convertTermModeltoArrayList(list));
-		
+		else{
+			System.out.println("Error in getCOursesNeeded()");
+		}
 	}
 
-	private void getCoursesTaken() {
-		
+	private void getCoursesTaken() {	
 		File filetoopen = new File(STUDENT);
-
-		System.out.println(filetoopen.getAbsolutePath());
-		boolean result = engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
-		System.out.println("Did it work? " + result);
-
+		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
 		TermModel list = nonDeterministicGoal("X", "taken(X)");
-
-		if (list == null)
+		if (list == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
-
-		System.out.println("Here is the result:" + list);
-		System.out.println(list.getChildCount());
-		if (list.isList()) {
-			// Visit the list using getChild(0) (for head) and getChild(1) (for
-			// tail)
-			System.out.println(list.getChild(0));
 		}
-		dw.setCoursesTaken(convertTermModeltoArrayList(list));
+		if (list.isList()) {
+			dw.setCoursesTaken(convertTermModeltoArrayList(list));
+		}else{ 
+			System.out.println("Error in getCoursesTaken()");
+		}
+		
 	}
 
 	public TermModel nonDeterministicGoal(String variables, String goal) {
-		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal
-				+ ",ListModel)";
+		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal + ",ListModel)";
 		return (TermModel) (engine.deterministicGoal(fullgoal, "[ListModel]")[0]);
 	}
 
 	public static void main(String args[]) {
-
 		final XSBSubprocessEngine engine = new XSBSubprocessEngine(args[0]);
-
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
 					.getInstalledLookAndFeels()) {
@@ -128,7 +99,6 @@ public class COSC422_Project3 {
 					.getLogger(COSC422_Project3.class.getName()).log(
 							java.util.logging.Level.SEVERE, null, ex);
 		}
-		// </editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -139,15 +109,9 @@ public class COSC422_Project3 {
 		});
 	}
 	
-	public void loadAllStudentInfo(){
-		
-		
-	}
-	
 	public ArrayList<String> convertTermModeltoArrayList(TermModel old){
 		TermModel tm =old;
 		ArrayList<String> newArrayList = new ArrayList<String>();
-		
 		
 		while(!tm.isListEnd()){
 			String temp = tm.getChild(0).toString();
@@ -155,7 +119,6 @@ public class COSC422_Project3 {
 			newArrayList.add(temp);
 			tm = (TermModel) tm.getChild(1);
 		}
-		
 		return newArrayList;
 	}
 }

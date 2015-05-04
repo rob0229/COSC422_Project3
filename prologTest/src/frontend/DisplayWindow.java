@@ -40,14 +40,10 @@ public class DisplayWindow extends JFrame {
 
 	// constructor
 	public DisplayWindow() {
-
 		createGroupLayout();
 		frame.pack();
 		frame.setVisible(true);
 		coursesTaken.add("Test");
-		
-	
-		
 	}
 
 	public void setCoursesTaken(ArrayList<String> s) {
@@ -62,13 +58,11 @@ public class DisplayWindow extends JFrame {
 	
 	private void addCoursesNeededToPanel() {
 		for(int i = 0; i<coursesNeeded.size();i++){
-			
 			coursesNeededField.append(coursesNeeded.get(i)+"  ");
 			if(i%4 == 0 && i>3){
 				coursesNeededField.append("\n");
 			}
 		}
-		
 	}
 
 	//appends the coursesTakenField with all the items in the coursesTaken Array
@@ -79,13 +73,11 @@ public class DisplayWindow extends JFrame {
 				coursesTakenField.append("\n");
 			}
 		}
-		
 	}
 
 	// Submit Button Listener
 	public void addSubmitButtonActionListener(ActionListener listener) {
 		submit.addActionListener(listener);
-		
 	}
 
 	private void createGroupLayout() {
