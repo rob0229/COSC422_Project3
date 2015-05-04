@@ -7,26 +7,72 @@ package frontend;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.JList;
 
 import com.declarativa.interprolog.PrologEngine;
 import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
 
+
+
+
 public class COSC422_Project3 {
+	final String PROLOGFILE = "src/prolog/backend_logic.pl";
+	final String COURSEPATH = "courseNames.txt";
+	final String PREREQPATH = "coursePreReq.txt";
+	final String STUDENT = "student_John_Doe.txt";
 	PrologEngine engine;
 	private final DisplayWindow dw = new DisplayWindow();
 
 	// constructor
 	public COSC422_Project3(PrologEngine e) {
 		engine = e;
-		String coursePath = "courseNames.txt";
-		String prereqpath = "coursePreReq.txt";
-		String studentpath = "student_John_Doe.txt";
+		
 		String[] courses;
 
-		engine.consultAbsolute(new File("src/prolog/backend_logic.pl"));
+		engine.consultAbsolute(new File(PROLOGFILE));
 
-		File filetoopen = new File(coursePath);
+		getCoursesTaken();
+		getCoursesNeeded();
+		
+		dw.addSubmitButtonActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("button clicked");
+				
+			}
+		});
+	}
+
+	private void getCoursesNeeded() {
+		File filetoopen = new File(COURSEPATH);
+
+		System.out.println(filetoopen.getAbsolutePath());
+		boolean result = engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
+		System.out.println("Did it work? " + result);
+
+		TermModel list = nonDeterministicGoal("X", "course(X)");
+
+		if (list == null)
+			throw new RuntimeException("Prolog getCourses goal should not have failed!");
+
+		System.out.println("Here is the result:" + list);
+		System.out.println(list.getChildCount());
+		if (list.isList()) {
+			// Visit the list using getChild(0) (for head) and getChild(1) (for
+			// tail)
+			System.out.println(list.getChild(0));
+		}
+		dw.setCoursesNeeded(convertTermModeltoArrayList(list));
+		
+	}
+
+	private void getCoursesTaken() {
+		
+		File filetoopen = new File(STUDENT);
 
 		System.out.println(filetoopen.getAbsolutePath());
 		boolean result = engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
@@ -40,22 +86,16 @@ public class COSC422_Project3 {
 		System.out.println("Here is the result:" + list);
 		System.out.println(list.getChildCount());
 		if (list.isList()) {
-			// Visit the list using getChild(0) (for head) and getChild(1) (for tail)
+			// Visit the list using getChild(0) (for head) and getChild(1) (for
+			// tail)
 			System.out.println(list.getChild(0));
 		}
-		
-		dw.addSubmitButtonActionListener(
-				new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						dw.setText("It Works!");
-					}
-				}
-		);
+		dw.setCoursesTaken(convertTermModeltoArrayList(list));
 	}
 
 	public TermModel nonDeterministicGoal(String variables, String goal) {
-		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal + ",ListModel)";
+		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal
+				+ ",ListModel)";
 		return (TermModel) (engine.deterministicGoal(fullgoal, "[ListModel]")[0]);
 	}
 
@@ -97,5 +137,25 @@ public class COSC422_Project3 {
 				new COSC422_Project3(engine);
 			}
 		});
+	}
+	
+	public void loadAllStudentInfo(){
+		
+		
+	}
+	
+	public ArrayList<String> convertTermModeltoArrayList(TermModel old){
+		TermModel tm =old;
+		ArrayList<String> newArrayList = new ArrayList<String>();
+		
+		
+		while(!tm.isListEnd()){
+			String temp = tm.getChild(0).toString();
+			System.out.println("Temp is: "+temp);
+			newArrayList.add(temp);
+			tm = (TermModel) tm.getChild(1);
+		}
+		
+		return newArrayList;
 	}
 }
