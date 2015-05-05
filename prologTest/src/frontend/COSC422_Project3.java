@@ -161,7 +161,6 @@ public class COSC422_Project3 {
 		
 		while(!tm.isListEnd()){
 			String temp = tm.getChild(0).toString();
-			System.out.println("Temp is: "+temp);
 			newArrayList.add(temp);
 			tm = (TermModel) tm.getChild(1);
 		}

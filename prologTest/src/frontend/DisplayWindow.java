@@ -51,8 +51,7 @@ public class DisplayWindow extends JFrame {
 	}
 	
 	public void addStudentNames(String s){
-		studentNames.add(s);
-		addStudentNames();
+		studentNameField.addItem(s);
 	}
 
 	public void setCoursesTaken(ArrayList<String> s) {
@@ -69,14 +68,9 @@ public class DisplayWindow extends JFrame {
 		return (String) studentNameField.getSelectedItem();
 	}
 	
-	public void addStudentNames(){
-		for(int i = 0; i<studentNames.size();i++){
-			studentNameField.addItem(studentNames.get(i));
-		}
-	}
-	
 	
 	private void addCoursesNeededToPanel() {
+		coursesNeededField.setText("");
 		for(int i = 0; i<coursesNeeded.size();i++){
 			coursesNeededField.append(coursesNeeded.get(i)+"  ");
 			if(i%4 == 0 && i>3){
@@ -87,6 +81,7 @@ public class DisplayWindow extends JFrame {
 
 	//appends the coursesTakenField with all the items in the coursesTaken Array
 	public void addCoursesTakenToPanel(){
+		coursesTakenField.setText("");
 		for(int i = 0; i<coursesTaken.size();i++){
 			coursesTakenField.append(coursesTaken.get(i)+"  ");
 			if(i%4 == 0 && i>3){
