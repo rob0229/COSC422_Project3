@@ -1,0 +1,1 @@
+degree(cosc117, cosc120, cosc220, cosc250, cosc320, cosc350, cosc362, cosc386, cosc425, cosc426, cosc450, [cosc330, cosc370, cosc420, cosc422, cosc432, cosc456, cosc472, cosc482, cosc490, math471, [cosc380, cosc390, cosc495]] ).

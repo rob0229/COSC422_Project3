@@ -16,9 +16,11 @@ import javax.swing.JTextArea;
 
 public class DisplayWindow extends JFrame {
 	//Data Variables
+	ArrayList<String> courses = new ArrayList<String>();
 	ArrayList<String> coursesTaken = new ArrayList<String>();
 	ArrayList<String> coursesNeeded = new ArrayList<String>();
 	ArrayList<String> studentNames = new ArrayList<String>();
+	ArrayList<String> coursePrereq = new ArrayList<String>();
 	//frame
 	JFrame frame = new JFrame("Math & Computer Science Degree Course Monitor");
 	//panels
@@ -27,29 +29,49 @@ public class DisplayWindow extends JFrame {
 	JPanel coursesTakenPanel = new JPanel();
 	JPanel coursesNeededPanel = new JPanel();
 	JPanel nextSemesterPanel = new JPanel();
+	JPanel coursePrereqPanel = new JPanel();
 	//buttons
 	JButton getScheduleOptions = new JButton("Show Schedule Options");
-	JButton submit = new JButton("Get Student");
+	JButton getStudentBtn = new JButton("Get Student");
+	JButton getCoursePrereqBtn = new JButton("Get Pre-reqs");
 	//text fields
 	JComboBox<String> studentNameField = new JComboBox<String>();
+	JComboBox<String> courseListField = new JComboBox<String>();
 	JTextArea coursesTakenField = new JTextArea();
 	JTextArea coursesNeededField = new JTextArea();
+	JTextArea coursePrereqField = new JTextArea();
 	//labels
 	JLabel coursesTakenLabel = new JLabel("Courses Taken");
 	JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
-	JLabel nextSemesterLabel = new JLabel("Classes You Can Take Next Semester");
+	JLabel nextSemesterLabel = new JLabel("Courses You Can Take Next Semester");
+	JLabel coursePrereqLabel = new JLabel("Course Pre-reqs");
 	
 
 	// constructor
 	public DisplayWindow() {
 		createGroupLayout();
-		studentNameField.setPreferredSize(new Dimension(50, 30));
 		containerPanel.setPreferredSize(new Dimension(400, 600));
-		setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
 	}
 	
+	public void setCoursePrereq(ArrayList<String> s){
+		coursePrereq = s;
+		updatePrereq();
+	}
+	
+	private void updatePrereq() {
+		coursePrereqField.setText("");
+		for(int i = 0; i<coursePrereq.size();i++){
+			coursePrereqField.append(coursePrereq.get(i)+"  ");
+			if(i%4 == 0 && i>3){
+				coursePrereqField.append("\n");
+			}
+		}
+		
+	}
+
 	public void addStudentNames(String s){
 		studentNameField.addItem(s);
 	}
@@ -68,6 +90,21 @@ public class DisplayWindow extends JFrame {
 		return (String) studentNameField.getSelectedItem();
 	}
 	
+	public String getCourseName(){
+		return (String)courseListField.getSelectedItem();
+	}
+	
+	public void setCourses(ArrayList<String> s){
+		courses=s;
+		addCoursesToField();
+	}
+	
+	private void addCoursesToField(){
+
+		for(int i = 0; i<courses.size();i++){
+			courseListField.addItem(courses.get(i));
+		}
+	}
 	
 	private void addCoursesNeededToPanel() {
 		coursesNeededField.setText("");
@@ -90,9 +127,14 @@ public class DisplayWindow extends JFrame {
 		}
 	}
 
-	// Submit Button Listener
+	// getStudentBtn Button Listener
 	public void addSubmitButtonActionListener(ActionListener listener) {
-		submit.addActionListener(listener);
+		getStudentBtn.addActionListener(listener);
+	}
+	
+	// getCoursePrereqBtn Button Listener
+	public void addGetCoursePrereqButtonActionListener(ActionListener listener) {
+		getCoursePrereqBtn.addActionListener(listener);
 	}
 
 	private void createGroupLayout() {
@@ -123,12 +165,12 @@ public class DisplayWindow extends JFrame {
 		studentNamePanelLayout.setHorizontalGroup(studentNamePanelLayout
 				.createSequentialGroup()
 				.addComponent(studentNameField)
-				.addComponent(submit));
+				.addComponent(getStudentBtn));
 
 		studentNamePanelLayout.setVerticalGroup(studentNamePanelLayout
 				.createParallelGroup()
 				.addComponent(studentNameField)
-				.addComponent(submit));
+				.addComponent(getStudentBtn));
 
 		// coursesTakenPanel layout
 		javax.swing.GroupLayout coursesTakenpanelLayout = new GroupLayout(
@@ -165,7 +207,6 @@ public class DisplayWindow extends JFrame {
 		// nextSemesterPanel layout
 		javax.swing.GroupLayout nextSemesterPanelLayout = new GroupLayout(
 				nextSemesterPanel);
-		//nextSemesterPanel.setPreferredSize(new Dimension(200, 400));
 		nextSemesterPanel.setLayout(nextSemesterPanelLayout);
 
 		nextSemesterPanelLayout.setAutoCreateContainerGaps(true);
@@ -175,6 +216,29 @@ public class DisplayWindow extends JFrame {
 		nextSemesterPanelLayout.setVerticalGroup(nextSemesterPanelLayout
 				.createSequentialGroup().addComponent(nextSemesterLabel));
 
+		// coursePrereqPanel layout
+		javax.swing.GroupLayout coursePrereqPanelLayout = new GroupLayout(coursePrereqPanel);
+		coursePrereqPanel.setLayout(coursePrereqPanelLayout);
+
+		coursePrereqPanelLayout.setAutoCreateContainerGaps(true);
+		coursePrereqPanelLayout.setAutoCreateGaps(true);
+		coursePrereqPanelLayout.setHorizontalGroup(coursePrereqPanelLayout
+				.createParallelGroup()
+				.addComponent(coursePrereqLabel)
+				.addGroup(coursePrereqPanelLayout
+						.createSequentialGroup()
+							.addComponent(coursePrereqField)
+							.addComponent(courseListField)
+							.addComponent(getCoursePrereqBtn)));
+		coursePrereqPanelLayout.setVerticalGroup(coursePrereqPanelLayout
+				.createSequentialGroup()
+				.addComponent(coursePrereqLabel)
+				.addGroup(coursePrereqPanelLayout
+						.createParallelGroup()
+							.addComponent(coursePrereqField)
+							.addComponent(courseListField)
+							.addComponent(getCoursePrereqBtn)));
+		
 		// containerPanel layout
 		javax.swing.GroupLayout containerPanelLayout = new GroupLayout(
 				containerPanel);
@@ -185,12 +249,14 @@ public class DisplayWindow extends JFrame {
 				.createParallelGroup().addComponent(studentNamePanel)
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
-				.addComponent(nextSemesterPanel));
+				.addComponent(nextSemesterPanel)
+				.addComponent(coursePrereqPanel));
 		containerPanelLayout.setVerticalGroup(containerPanelLayout
 				.createSequentialGroup().addComponent(studentNamePanel)
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
-				.addComponent(nextSemesterPanel));
+				.addComponent(nextSemesterPanel)
+				.addComponent(coursePrereqPanel));
 		// set panel sizes
 		
 		
