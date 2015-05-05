@@ -8,31 +8,33 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class DisplayWindow extends JFrame {
 	//Data Variables
 	ArrayList<String> coursesTaken = new ArrayList<String>();
 	ArrayList<String> coursesNeeded = new ArrayList<String>();
-	// frame
+	ArrayList<String> studentNames = new ArrayList<String>();
+	//frame
 	JFrame frame = new JFrame("Math & Computer Science Degree Course Monitor");
-	// panels
+	//panels
 	JPanel containerPanel = new JPanel();
 	JPanel studentNamePanel = new JPanel();
 	JPanel coursesTakenPanel = new JPanel();
 	JPanel coursesNeededPanel = new JPanel();
 	JPanel nextSemesterPanel = new JPanel();
-	// buttons
+	//buttons
 	JButton getScheduleOptions = new JButton("Show Schedule Options");
 	JButton submit = new JButton("Get Student");
 	//text fields
+	JComboBox<String> studentNameField = new JComboBox<String>();
 	JTextArea coursesTakenField = new JTextArea();
 	JTextArea coursesNeededField = new JTextArea();
-	// labels
+	//labels
 	JLabel coursesTakenLabel = new JLabel("Courses Taken");
 	JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
 	JLabel nextSemesterLabel = new JLabel("Classes You Can Take Next Semester");
@@ -41,9 +43,16 @@ public class DisplayWindow extends JFrame {
 	// constructor
 	public DisplayWindow() {
 		createGroupLayout();
+		studentNameField.setPreferredSize(new Dimension(50, 30));
+		containerPanel.setPreferredSize(new Dimension(400, 600));
+		setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
-		coursesTaken.add("Test");
+	}
+	
+	public void addStudentNames(String s){
+		studentNames.add(s);
+		addStudentNames();
 	}
 
 	public void setCoursesTaken(ArrayList<String> s) {
@@ -55,6 +64,17 @@ public class DisplayWindow extends JFrame {
 		coursesNeeded=s;
 		addCoursesNeededToPanel();
 	}
+	
+	public String getStudentName(){
+		return (String) studentNameField.getSelectedItem();
+	}
+	
+	public void addStudentNames(){
+		for(int i = 0; i<studentNames.size();i++){
+			studentNameField.addItem(studentNames.get(i));
+		}
+	}
+	
 	
 	private void addCoursesNeededToPanel() {
 		for(int i = 0; i<coursesNeeded.size();i++){
@@ -100,16 +120,19 @@ public class DisplayWindow extends JFrame {
 		// Student Name Panel Layout
 		javax.swing.GroupLayout studentNamePanelLayout = new GroupLayout(
 				studentNamePanel);
+		
 		studentNamePanel.setLayout(studentNamePanelLayout);
 		studentNamePanelLayout.setAutoCreateGaps(true);
 		studentNamePanelLayout.setAutoCreateContainerGaps(true);
 
 		studentNamePanelLayout.setHorizontalGroup(studentNamePanelLayout
 				.createSequentialGroup()
+				.addComponent(studentNameField)
 				.addComponent(submit));
 
 		studentNamePanelLayout.setVerticalGroup(studentNamePanelLayout
-				.createSequentialGroup()
+				.createParallelGroup()
+				.addComponent(studentNameField)
 				.addComponent(submit));
 
 		// coursesTakenPanel layout
@@ -174,9 +197,8 @@ public class DisplayWindow extends JFrame {
 				.addComponent(coursesNeededPanel)
 				.addComponent(nextSemesterPanel));
 		// set panel sizes
-		//studentNamePanel.setPreferredSize(new Dimension(100, 400));
-
-		containerPanel.setPreferredSize(new Dimension(400, 600));
+		
+		
 		frame.add(containerPanel);
 	}
 }

@@ -7,7 +7,9 @@ package frontend;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
+
 import com.declarativa.interprolog.PrologEngine;
 import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
@@ -16,7 +18,8 @@ public class COSC422_Project3 {
 	final String PROLOGFILE = "src/prolog/backend_logic.pl";
 	final String COURSEPATH = "courseNames.txt";
 	final String PREREQPATH = "coursePreReq.txt";
-	final String STUDENT = "student_John_Doe.txt";
+	final String STUDENT = "student_";
+	ArrayList<String> studentNames = new ArrayList<String>();
 	PrologEngine engine;
 	private final DisplayWindow dw = new DisplayWindow();
 
@@ -24,18 +27,22 @@ public class COSC422_Project3 {
 	public COSC422_Project3(PrologEngine e) {
 		engine = e;
 		engine.consultAbsolute(new File(PROLOGFILE));
-		getCoursesTaken();
-		getCoursesNeeded();
+		getStudentNames();
+	
 
 		dw.addSubmitButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("button clicked");	
+				System.out.println(dw.getStudentName());	
+				getCoursesTaken(dw.getStudentName());
+				getCoursesNeeded(dw.getStudentName());
+				
+				
 			}
 		});
 	}
 
-	private void getCoursesNeeded() {
+	private void getCoursesNeeded(String name) {
 		File filetoopen = new File(COURSEPATH);
 		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
 		TermModel list = nonDeterministicGoal("X", "course(X)");
@@ -43,18 +50,21 @@ public class COSC422_Project3 {
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
 		}
 		if (list.isList()) {
-			// Visit the list using getChild(0) (for head) and getChild(1) (for
-			// tail)
 			dw.setCoursesNeeded(convertTermModeltoArrayList(list));
 		}
 		else{
-			System.out.println("Error in getCOursesNeeded()");
+			System.out.println("Error in getCoursesNeeded()");
 		}
 	}
 
-	private void getCoursesTaken() {	
-		File filetoopen = new File(STUDENT);
+	private void getCoursesTaken(String name) {	
+		
+		String[] splitName = name.split(" ");	
+		File filetoopen = new File(STUDENT+splitName[0]+"_"+splitName[1]+".txt");
+		
+		System.out.println("filename path: "+filetoopen.getAbsolutePath());
 		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
+		
 		TermModel list = nonDeterministicGoal("X", "taken(X)");
 		if (list == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
@@ -65,6 +75,42 @@ public class COSC422_Project3 {
 			System.out.println("Error in getCoursesTaken()");
 		}
 		
+	}
+	
+	public void getStudentNames(){
+		
+		//**************************************************************************************
+		//This needs to be a relative path!
+		//FIX MEEEEEE!!!!!!!!!!!!!!!!!
+		//**************************************************************************************
+		File dir = new File("/Users/rob0229/git/COSC422_Project3/prologTest");
+		
+		System.out.println(dir.getAbsolutePath());
+		
+		File[] foundFiles = dir.listFiles(new FilenameFilter() {
+		    public boolean accept(File dir, String name) {
+		        return name.startsWith("student_");
+		    }
+		});
+		
+		System.out.println("Size of foundFiles is " + foundFiles.length);
+
+		for (File file : foundFiles) {
+			//for each student file, add the name to the student name string
+			//get all student files and add to prolog 
+			engine.deterministicGoal("getStudent('"+ file.getAbsolutePath() + "')");
+			
+			TermModel list = nonDeterministicGoal("X", "name(X)");
+			if (list == null){
+				throw new RuntimeException("Prolog getCourses goal should not have failed!");
+			}
+			if (list.isList()) {
+				studentNames.add(convertTermModeltoArrayList(list).get(0));
+				dw.addStudentNames(convertTermModeltoArrayList(list).get(0));
+			}else{ 
+				System.out.println("Error in getCoursesTaken()");
+			}	
+		}
 	}
 
 	public TermModel nonDeterministicGoal(String variables, String goal) {

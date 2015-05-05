@@ -1,0 +1,6 @@
+name('Arnold Schwartznegger').
+taken(cosc117).
+taken(cosc120).
+taken(math201).
+taken(math202).
+taken(cosc250). 
