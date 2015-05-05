@@ -15,28 +15,29 @@ import com.declarativa.interprolog.TermModel;
 import com.declarativa.interprolog.XSBSubprocessEngine;
 
 public class COSC422_Project3 {
+	private final DisplayWindow dw = new DisplayWindow();
 	final String PROLOGFILE = "src/prolog/backend_logic.pl";
 	final String COURSEPATH = "courseNames.txt";
 	final String PREREQPATH = "coursePreReq.txt";
 	final String STUDENT = "student_";
 	ArrayList<String> studentNames = new ArrayList<String>();
-	//ArrayList<String> courseNames = new ArrayList<String>();
 	PrologEngine engine;
-	private final DisplayWindow dw = new DisplayWindow();
-
+	
 	// constructor
 	public COSC422_Project3(PrologEngine e) {
 		engine = e;
 		engine.consultAbsolute(new File(PROLOGFILE));
 		getStudentNames();
 		getCourses();
+
 	
 		dw.addSubmitButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(dw.getStudentName());	
 				getCoursesTaken(dw.getStudentName());
-				getCoursesNeeded(dw.getStudentName());	
+				getCoursesNeeded(dw.getStudentName());
+				getNextSemesterCourses(dw.getStudentName());
 			}
 		});
 		
@@ -49,14 +50,16 @@ public class COSC422_Project3 {
 		});
 	}
 	
-	//GOAL IS NOT WORKING*****************************************************
-	
+	private void getNextSemesterCourses(String name) {
+		// TODO: get the courses a student is eligible for from prolog
+		//and add to view by calling setNextSemesterCourses(ArrayList)
+			
+	}
 	private void getCoursePrereq(String courseName){
 		File filetoopen = new File(PREREQPATH);
-		engine.deterministicGoal("getPreReq('"+ filetoopen.getAbsolutePath() + "')");
+		engine.deterministicGoal("getPrereq('"+ filetoopen.getAbsolutePath() + "')");
 		
-		System.out.println("Coursename:" +courseName);
-		TermModel list = nonDeterministicGoal("X" , "getPrereqList(cosc220, X)");
+		TermModel list = nonDeterministicGoal("X" , "prereq("+courseName+", X)");
 		if (list == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
 		}

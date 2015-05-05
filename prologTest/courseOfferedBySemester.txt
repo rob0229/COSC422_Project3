@@ -1,0 +1,4 @@
+speven().
+faeven().
+faodd().
+spodd().
