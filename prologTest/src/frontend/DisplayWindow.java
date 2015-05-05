@@ -215,7 +215,7 @@ public class DisplayWindow extends JFrame {
 		nextSemesterPanelLayout.setAutoCreateContainerGaps(true);
 		nextSemesterPanelLayout.setAutoCreateGaps(true);
 		nextSemesterPanelLayout.setHorizontalGroup(nextSemesterPanelLayout
-				.createSequentialGroup().addComponent(nextSemesterLabel)
+				.createParallelGroup().addComponent(nextSemesterLabel)
 				.addComponent(nextSemesterField));
 		nextSemesterPanelLayout.setVerticalGroup(nextSemesterPanelLayout
 				.createSequentialGroup().addComponent(nextSemesterLabel)
