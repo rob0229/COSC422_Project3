@@ -1,1 +1,31 @@
-degree(cosc117, cosc120, cosc220, cosc250, cosc320, cosc350, cosc362, cosc386, cosc425, cosc426, cosc450, [cosc330, cosc370, cosc420, cosc422, cosc432, cosc456, cosc472, cosc482, cosc490, math471, [cosc380, cosc390, cosc495]] ).
+degree(cosc117).
+degree(cosc120).
+degree(math201).
+degree(math210).
+degree(cosc220).
+degree(cosc250).
+degree(math293).
+degree(cosc320).
+degree(cosc350).
+degree(cosc362).
+degree(cosc386).
+degree(cosc425).
+degree(cosc426).
+degree(cosc450).
+
+%list of electives
+degreeElectives(cosc330).
+degreeElectives(cosc370).
+degreeElectives(cosc420).
+degreeElectives(cosc422).
+degreeElectives(cosc432).
+degreeElectives(cosc456).
+degreeElectives(cosc472).
+degreeElectives(cosc482).
+degreeElectives(cosc490).
+degreeElectives(math471).
+
+%only one of 3
+degree1of3(cosc380).
+degree1of3(cosc390).
+degree1of3(cosc495).

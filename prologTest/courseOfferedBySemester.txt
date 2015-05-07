@@ -1,4 +1,4 @@
-speven().
-faeven().
-faodd().
-spodd().
+speven(X) :- member(X, [cosc330, cosc370, cosc426, cosc450, cosc482, cosc117, cosc119, cosc120, cosc220, cosc250, cosc320, cosc362, cosc386, cosc380, cosc390, cosc456, cosc495, math201, math202, math210, math293]).
+faeven(X) :- member(X, [cosc350, cosc425, cosc472, math471, cosc117, cosc119, cosc120, cosc220, cosc250, cosc320, cosc362, cosc386, cosc380, cosc390, cosc456, cosc495, math201, math202, math210, math293]).
+faodd(X) :- member(X, [cosc350, cosc420, cosc425, cosc432, cosc472, cosc490, cosc117, cosc119, cosc120, cosc220, cosc250, cosc320, cosc362, cosc386, cosc380, cosc390, cosc456, cosc495, math201, math202, math210, math293]).
+spodd(X) :- member(X, [cosc370, cosc422, cosc426, cosc450, cosc117, cosc119, cosc120, cosc220, cosc250, cosc320, cosc362, cosc386, cosc380, cosc390, cosc456, cosc495, math201, math202, math210, math293]).

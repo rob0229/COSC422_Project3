@@ -22,7 +22,7 @@ prereq(cosc425, cosc320).
 prereq(cosc426, cosc425).
 prereq(cosc432, cosc320).
 prereq(cosc450, cosc350).
-prereq(cosc456, cosc250).
+prereq(cosc456, cosc220).
 prereq(cosc456, cosc250).
 prereq(math471, cosc117).
 prereq(math471, math293).
@@ -33,7 +33,10 @@ prereq(cosc482, cosc120).
 
 
 :-dynamic prereq/2.
+prereq(cosc117, []).
 prereq(cosc120, [cosc117]).
+prereq(math201, []).
+prereq(math210, []).
 prereq(math202, [math201]).
 prereq(cosc220, [cosc120]).
 prereq(cosc250, [cosc117, cosc120]). 
@@ -50,7 +53,7 @@ prereq(cosc425, [cosc320]).
 prereq(cosc426, [cosc425]).
 prereq(cosc432, [cosc320]).
 prereq(cosc450, [cosc350]).
-prereq(cosc456, [cosc250, cosc250]).
+prereq(cosc456, [cosc220, cosc250]).
 prereq(math471, [cosc117, math293]).
 prereq(cosc472, [cosc370]).
 prereq(cosc482, [math293, cosc120]).

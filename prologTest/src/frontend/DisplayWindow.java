@@ -32,6 +32,7 @@ public class DisplayWindow extends JFrame {
 	JPanel coursesNeededPanel = new JPanel();
 	JPanel nextSemesterPanel = new JPanel();
 	JPanel coursePrereqPanel = new JPanel();
+	JPanel semesterPanel = new JPanel();
 	//buttons
 	JButton getScheduleOptions = new JButton("Show Schedule Options");
 	JButton getStudentBtn = new JButton("Get Student");
@@ -39,6 +40,7 @@ public class DisplayWindow extends JFrame {
 	//text fields
 	JComboBox<String> studentNameField = new JComboBox<String>();
 	JComboBox<String> courseListField = new JComboBox<String>();
+	JComboBox<String> semesterField = new JComboBox<String>();
 	JTextArea coursesTakenField = new JTextArea();
 	JTextArea coursesNeededField = new JTextArea();
 	JTextArea nextSemesterField = new JTextArea();
@@ -48,17 +50,25 @@ public class DisplayWindow extends JFrame {
 	JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
 	JLabel nextSemesterLabel = new JLabel("Courses You Can Take Next Semester");
 	JLabel coursePrereqLabel = new JLabel("Course Pre-reqs");
-	
+	JLabel semesterLabel = new JLabel("Current Semester");
 
 	// constructor
 	public DisplayWindow() {
 		createGroupLayout();
+		semesterField.addItem("Spring Even");
+		semesterField.addItem("Fall Even");
+		semesterField.addItem("Spring Odd");
+		semesterField.addItem("Fall Odd");
+
 		containerPanel.setPreferredSize(new Dimension(400, 600));
-		frame.setLocationRelativeTo(null);
+		//frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
 	}
 	//setter and getters
+	public String getCurrentSemester() {
+		return (String)semesterField.getSelectedItem();
+	}
 	public void setCoursePrereq(ArrayList<String> s){
 		coursePrereq = s;
 		coursePrereqField.setText("");
@@ -82,14 +92,45 @@ public class DisplayWindow extends JFrame {
 			}
 		}
 	}
-	public void setCoursesNeeded(ArrayList<String> s){
-		coursesNeeded=s;
-		coursesNeededField.setText("");
+	public void setCoursesNeeded(ArrayList<String> requirements, ArrayList<String> electives, int numneeded, ArrayList<String> researchElectives){
+		if (requirements.isEmpty() && numneeded == 0) {
+				coursesNeededField.setText("You're done!");
+				return;
+		}
+		
+		coursesNeeded = requirements;
+		coursesNeededField.setText("Required:\n");
 		for(int i = 0; i<coursesNeeded.size();i++){
 			coursesNeededField.append(coursesNeeded.get(i)+"  ");
 			if(i%4 == 0 && i>3){
 				coursesNeededField.append("\n");
 			}
+		}
+		
+		if (numneeded == 0) {
+			return;
+		}
+
+		coursesNeededField.append("\n\n" + numneeded + " courses of:\n");
+		coursesNeeded = electives;
+		for(int i = 0; i<coursesNeeded.size();i++){
+			coursesNeededField.append(coursesNeeded.get(i)+"  ");
+			if(i%4 == 0 && i>3){
+				coursesNeededField.append("\n");
+			}
+		}
+		
+		if (researchElectives != null) {
+			coursesNeededField.append("\n[ One of: ");
+			coursesNeeded = researchElectives;
+			for(int i = 0; i<coursesNeeded.size();i++){
+				coursesNeededField.append(coursesNeeded.get(i)+"  ");
+				if(i%4 == 0 && i>3){
+					coursesNeededField.append("\n");
+				}
+		
+			}
+			coursesNeededField.append("]");
 		}
 	}
 	public void setNextSemesterCourses(ArrayList<String> s){
@@ -126,6 +167,7 @@ public class DisplayWindow extends JFrame {
 	private void createGroupLayout() {
 		
 		// set border layouts
+		semesterPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		containerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		studentNamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		coursesTakenPanel
@@ -136,10 +178,27 @@ public class DisplayWindow extends JFrame {
 				.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		// set background colors
+		semesterPanel.setBackground(Color.blue);
 		studentNamePanel.setBackground(Color.CYAN);
 		coursesTakenPanel.setBackground(Color.magenta);
 		containerPanel.setBackground(Color.green);
 
+		//semester panel layout
+		javax.swing.GroupLayout semesterPanelLayout = new GroupLayout(semesterPanel);
+		semesterPanel.setLayout(semesterPanelLayout);
+		semesterPanelLayout.setAutoCreateGaps(true);
+		semesterPanelLayout.setAutoCreateContainerGaps(true);
+		
+		semesterPanelLayout.setHorizontalGroup(semesterPanelLayout
+				.createParallelGroup()
+				.addComponent(semesterLabel)
+				.addComponent(semesterField));
+		semesterPanelLayout.setVerticalGroup(semesterPanelLayout
+				.createSequentialGroup()
+				.addComponent(semesterLabel)
+				.addComponent(semesterField));
+		
+		
 		// Student Name Panel Layout
 		javax.swing.GroupLayout studentNamePanelLayout = new GroupLayout(
 				studentNamePanel);
@@ -234,13 +293,17 @@ public class DisplayWindow extends JFrame {
 		containerPanelLayout.setAutoCreateContainerGaps(true);
 		containerPanelLayout.setAutoCreateGaps(true);
 		containerPanelLayout.setHorizontalGroup(containerPanelLayout
-				.createParallelGroup().addComponent(studentNamePanel)
+				.createParallelGroup()
+				.addComponent(semesterPanel)
+				.addComponent(studentNamePanel)
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
 				.addComponent(nextSemesterPanel)
 				.addComponent(coursePrereqPanel));
 		containerPanelLayout.setVerticalGroup(containerPanelLayout
-				.createSequentialGroup().addComponent(studentNamePanel)
+				.createSequentialGroup()
+				.addComponent(semesterPanel)
+				.addComponent(studentNamePanel)
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
 				.addComponent(nextSemesterPanel)

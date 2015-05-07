@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.declarativa.interprolog.PrologEngine;
@@ -20,6 +19,7 @@ public class COSC422_Project3 {
 	final String PROLOGFILE = "./src/prolog/backend_logic.pl";
 	final String COURSEPATH = "./courseNames.txt";
 	final String PREREQPATH = "./coursePreReq.txt";
+	final String DEGREEREQPATH = "./degreeRequirement.txt";
 	final String STUDENT = "student_";
 	ArrayList<String> studentNames = new ArrayList<String>();
 	PrologEngine engine;
@@ -30,6 +30,9 @@ public class COSC422_Project3 {
 		engine.consultAbsolute(new File(PROLOGFILE));
 		getStudentNames();
 		getCourses();
+
+		File filetoopen = new File(PREREQPATH);
+		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 
 	
 		dw.addSubmitButtonActionListener(new ActionListener() {
@@ -52,13 +55,21 @@ public class COSC422_Project3 {
 	}
 	
 	private void getNextSemesterCourses(String name) {
-		// TODO: get the courses a student is eligible for from prolog
-		//and add to view by calling setNextSemesterCourses(ArrayList)
-			
+		TermModel list = nonDeterministicGoal("X", "eligibleToTake(X)");
+		if (list == null){
+			throw new RuntimeException("Prolog eligibleToTake goal should not have failed!");
+		}
+		if (list.isList()) {
+			System.out.println("List is: "+list);
+			dw.setNextSemesterCourses(convertTermModeltoArrayList(list));
+		}else{ 
+			System.out.println("Error in getNextSemesterCourse()");
+		}
 	}
+	
 	private void getCoursePrereq(String courseName){
 		File filetoopen = new File(PREREQPATH);
-		engine.deterministicGoal("getPrereq('"+ filetoopen.getAbsolutePath() + "')");
+		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 		
 		TermModel list = nonDeterministicGoal("X" , "prereq("+courseName+", X)");
 		if (list == null){
@@ -73,14 +84,32 @@ public class COSC422_Project3 {
 	}
 
 	private void getCoursesNeeded(String name) {
-		File filetoopen = new File(COURSEPATH);
-		engine.deterministicGoal("getCourses('"+ filetoopen.getName() + "')");
-		TermModel list = nonDeterministicGoal("X", "course(X)");
-		if (list == null){
+		File filetoopen = new File(DEGREEREQPATH);
+		engine.deterministicGoal("getDegreeRequirements('"+ filetoopen.getName() + "')");
+		
+		TermModel required = nonDeterministicGoal("X", "requiredToTake(X)");
+		TermModel electives = nonDeterministicGoal("X", "electivesToTake(X)");
+		TermModel electivesTaken = nonDeterministicGoal("X", "electivesTaken(X)");
+		TermModel electives1of3 = nonDeterministicGoal("X", "degree1of3(X)");
+		
+		boolean takenResearch = engine.deterministicGoal("takenResearch()");
+		
+		if (required == null || electives == null || electivesTaken == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
 		}
-		if (list.isList()) {
-			dw.setCoursesNeeded(convertTermModeltoArrayList(list));
+		if (required.isList() && electives.isList() && electivesTaken.isList()) {
+			ArrayList<String> electivesTakenList = convertTermModeltoArrayList(electivesTaken);
+			int numneeded = 3 - electivesTakenList.size();
+			ArrayList<String> list1of3 = null;
+			
+			if (takenResearch) {
+				numneeded--;
+			} else {
+				list1of3 = convertTermModeltoArrayList(electives1of3);
+			}
+			if (numneeded < 0) numneeded = 0;
+			
+			dw.setCoursesNeeded(convertTermModeltoArrayList(required), convertTermModeltoArrayList(electives), numneeded, list1of3);
 		}
 		else{
 			System.out.println("Error in getCoursesNeeded()");
@@ -106,20 +135,11 @@ public class COSC422_Project3 {
 	}
 	
 	public void getStudentNames(){
-		//**************************************************************************************
-		//This needs to be a relative path!
-		//FIX MEEEEEE!!!!!!!!!!!!!!!!!
-		//**************************************************************************************
-		//File dir = new File("/Users/rob0229/git/COSC422_Project3/prologTest");
-		//File dir = new File("C:/Users/User/Documents/Classes/cosc422/COSC422_Project3/prologTest/");
 		File dir = new File(".");
-		
-		System.out.println(dir.getAbsolutePath());
-		System.out.println(new File(".").getAbsolutePath());
-		
+				
 		File[] foundFiles = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
-		        return name.startsWith("student_");
+		        return name.startsWith(STUDENT);
 		    }
 		});
 		
@@ -146,7 +166,7 @@ public class COSC422_Project3 {
 
 	public void getCourses(){
 			
-		File file = new File("./courseNames.txt");
+		File file = new File(COURSEPATH);
 		engine.deterministicGoal("getCourses('"+ file.getName() + "')");
 		
 		TermModel list = nonDeterministicGoal("X", "course(X)");
