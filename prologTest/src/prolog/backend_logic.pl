@@ -13,6 +13,7 @@ takenList([H|L]) :- taken(H), takenList(L).
 %compare the courses taken with the degree requirements and return a list of classes still needed
 
 
-%return a list of all the classes that a student is eligable to take next semester
+%get a list of all the classes that a student is eligable to take next semester. Just return 
+%all classes that the studen has the prereq for and not already taken
 
 

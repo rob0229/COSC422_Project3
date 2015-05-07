@@ -57,70 +57,9 @@ public class DisplayWindow extends JFrame {
 		frame.pack();
 		frame.setVisible(true);
 	}
+	//setter and getters
 	public void setCoursePrereq(ArrayList<String> s){
 		coursePrereq = s;
-		updatePrereq();
-	}
-	//public functions
-	public void addStudentNames(String s){
-		studentNameField.addItem(s);
-	}
-	public void setCoursesTaken(ArrayList<String> s) {
-		coursesTaken = s;
-		addCoursesTakenToPanel();
-	}
-	public void setCoursesNeeded(ArrayList<String> s){
-		coursesNeeded=s;
-		addCoursesNeededToPanel();
-	}
-	public void setNextSemesterCourses(ArrayList<String> s){
-		nextSemesterCourses=s;
-		addNextSemesterCoursesToField();
-	}
-	public String getStudentName(){
-		return (String) studentNameField.getSelectedItem();
-	}
-	//functions for prereqs
-	public String getCourseName(){
-		return (String)courseListField.getSelectedItem();
-	}
-	public void setCourses(ArrayList<String> s){
-		courses=s;
-		addCoursesToCourseListField();
-	}
-	// getStudentBtn Button Listener
-	public void addSubmitButtonActionListener(ActionListener listener) {
-		getStudentBtn.addActionListener(listener);
-	}
-	// getCoursePrereqBtn Button Listener
-	public void addGetCoursePrereqButtonActionListener(ActionListener listener) {
-		getCoursePrereqBtn.addActionListener(listener);
-	}
-	private void addNextSemesterCoursesToField() {
-		nextSemesterField.setText("");
-		for(int i = 0; i<nextSemesterCourses.size();i++){
-			nextSemesterField.append(nextSemesterCourses.get(i)+"  ");
-			if(i%4 == 0 && i>3){
-				nextSemesterField.append("\n");
-			}
-		}
-	}
-	private void addCoursesToCourseListField(){
-
-		for(int i = 0; i<courses.size();i++){
-			courseListField.addItem(courses.get(i));
-		}
-	}
-	private void addCoursesNeededToPanel() {
-		coursesNeededField.setText("");
-		for(int i = 0; i<coursesNeeded.size();i++){
-			coursesNeededField.append(coursesNeeded.get(i)+"  ");
-			if(i%4 == 0 && i>3){
-				coursesNeededField.append("\n");
-			}
-		}
-	}
-	private void updatePrereq() {
 		coursePrereqField.setText("");
 		for(int i = 0; i<coursePrereq.size();i++){
 			coursePrereqField.append(coursePrereq.get(i)+"  ");
@@ -129,17 +68,60 @@ public class DisplayWindow extends JFrame {
 			}
 		}	
 	}
-	//appends the coursesTakenField with all the items in the coursesTaken Array
-		private void addCoursesTakenToPanel(){
-			coursesTakenField.setText("");
-			for(int i = 0; i<coursesTaken.size();i++){
-				coursesTakenField.append(coursesTaken.get(i)+"  ");
-				if(i%4 == 0 && i>3){
-					coursesTakenField.append("\n");
-				}
+	public void addStudentNames(String s){
+		studentNameField.addItem(s);
+	}
+	public void setCoursesTaken(ArrayList<String> s) {
+		coursesTaken = s;
+		coursesTakenField.setText("");
+		for(int i = 0; i<coursesTaken.size();i++){
+			coursesTakenField.append(coursesTaken.get(i)+"  ");
+			if(i%4 == 0 && i>3){
+				coursesTakenField.append("\n");
 			}
 		}
-		
+	}
+	public void setCoursesNeeded(ArrayList<String> s){
+		coursesNeeded=s;
+		coursesNeededField.setText("");
+		for(int i = 0; i<coursesNeeded.size();i++){
+			coursesNeededField.append(coursesNeeded.get(i)+"  ");
+			if(i%4 == 0 && i>3){
+				coursesNeededField.append("\n");
+			}
+		}
+	}
+	public void setNextSemesterCourses(ArrayList<String> s){
+		nextSemesterCourses=s;
+		nextSemesterField.setText("");
+		for(int i = 0; i<nextSemesterCourses.size();i++){
+			nextSemesterField.append(nextSemesterCourses.get(i)+"  ");
+			if(i%4 == 0 && i>3){
+				nextSemesterField.append("\n");
+			}
+		}
+	}
+	public String getStudentName(){
+		return (String) studentNameField.getSelectedItem();
+	}
+	public String getCourseName(){
+		return (String)courseListField.getSelectedItem();
+	}
+	public void setCourses(ArrayList<String> s){
+		courses=s;
+		for(int i = 0; i<courses.size();i++){
+			courseListField.addItem(courses.get(i));
+		}
+	}
+	// Button Listeners
+	public void addSubmitButtonActionListener(ActionListener listener) {
+		getStudentBtn.addActionListener(listener);
+	}
+	// getCoursePrereqBtn Button Listener
+	public void addGetCoursePrereqButtonActionListener(ActionListener listener) {
+		getCoursePrereqBtn.addActionListener(listener);
+	}
+	//Layout function	
 	private void createGroupLayout() {
 		
 		// set border layouts
@@ -263,7 +245,6 @@ public class DisplayWindow extends JFrame {
 				.addComponent(nextSemesterPanel)
 				.addComponent(coursePrereqPanel));
 		// set panel sizes
-		
 		
 		frame.add(containerPanel);
 	}

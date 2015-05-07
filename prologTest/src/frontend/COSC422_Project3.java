@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.declarativa.interprolog.PrologEngine;
@@ -200,12 +201,23 @@ public class COSC422_Project3 {
 	
 	//Convert the TermModel Object returned from prolog into an ArrayList for easier passing to the View
 	public ArrayList<String> convertTermModeltoArrayList(TermModel old){
-		TermModel tm =old;
+		TermModel tm = old;
 		ArrayList<String> newArrayList = new ArrayList<String>();
-		
+		String parsed[] = null;
 		while(!tm.isListEnd()){
+			
 			String temp = tm.getChild(0).toString();
-			newArrayList.add(temp);
+			//divides string from list format ([1, 2]) into individual strings and removes '[' and ']' chars
+			if(temp.contains("[")){
+				parsed = temp.split(",");
+				for(int i=0; i<parsed.length; i++){
+					parsed[i] = parsed[i].replace("[", "");
+					parsed[i] = parsed[i].replace("]", "");
+					newArrayList.add(parsed[i]);
+				}
+			}else
+				newArrayList.add(temp);
+			
 			tm = (TermModel) tm.getChild(1);
 		}
 		return newArrayList;

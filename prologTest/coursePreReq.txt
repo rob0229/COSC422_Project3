@@ -36,7 +36,7 @@ prereq(cosc482, cosc120).
 prereq(cosc120, [cosc117]).
 prereq(math202, [math201]).
 prereq(cosc220, [cosc120]).
-prereq(cosc250, [cosc117, 250]). 
+prereq(cosc250, [cosc117, cosc120]). 
 prereq(math293, [math202]).
 prereq(cosc320, [cosc220, math210]).
 prereq(cosc330, [cosc220]).
