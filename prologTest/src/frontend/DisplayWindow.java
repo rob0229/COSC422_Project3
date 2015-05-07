@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+@SuppressWarnings("serial")
 public class DisplayWindow extends JFrame {
 	//Data Variables
 	ArrayList<String> courses = new ArrayList<String>();

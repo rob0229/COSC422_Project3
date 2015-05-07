@@ -17,9 +17,9 @@ import com.declarativa.interprolog.XSBSubprocessEngine;
 
 public class COSC422_Project3 {
 	private final DisplayWindow dw = new DisplayWindow();
-	final String PROLOGFILE = "src/prolog/backend_logic.pl";
-	final String COURSEPATH = "courseNames.txt";
-	final String PREREQPATH = "coursePreReq.txt";
+	final String PROLOGFILE = "./src/prolog/backend_logic.pl";
+	final String COURSEPATH = "./courseNames.txt";
+	final String PREREQPATH = "./coursePreReq.txt";
 	final String STUDENT = "student_";
 	ArrayList<String> studentNames = new ArrayList<String>();
 	PrologEngine engine;
@@ -74,7 +74,7 @@ public class COSC422_Project3 {
 
 	private void getCoursesNeeded(String name) {
 		File filetoopen = new File(COURSEPATH);
-		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
+		engine.deterministicGoal("getCourses('"+ filetoopen.getName() + "')");
 		TermModel list = nonDeterministicGoal("X", "course(X)");
 		if (list == null){
 			throw new RuntimeException("Prolog getCourses goal should not have failed!");
@@ -89,10 +89,10 @@ public class COSC422_Project3 {
 
 	private void getCoursesTaken(String name) {		
 		String[] splitName = name.split(" ");	
-		File filetoopen = new File(STUDENT+splitName[0]+"_"+splitName[1]+".txt");
+		File filetoopen = new File("./"+STUDENT+splitName[0]+"_"+splitName[1]+".txt");
 		
 		System.out.println("filename path: "+filetoopen.getAbsolutePath());
-		engine.deterministicGoal("getCourses('"+ filetoopen.getAbsolutePath() + "')");
+		engine.deterministicGoal("getCourses('"+ filetoopen.getName() + "')");
 		
 		TermModel list = nonDeterministicGoal("X", "taken(X)");
 		if (list == null){
@@ -110,9 +110,12 @@ public class COSC422_Project3 {
 		//This needs to be a relative path!
 		//FIX MEEEEEE!!!!!!!!!!!!!!!!!
 		//**************************************************************************************
-		File dir = new File("/Users/rob0229/git/COSC422_Project3/prologTest");
+		//File dir = new File("/Users/rob0229/git/COSC422_Project3/prologTest");
+		//File dir = new File("C:/Users/User/Documents/Classes/cosc422/COSC422_Project3/prologTest/");
+		File dir = new File(".");
 		
 		System.out.println(dir.getAbsolutePath());
+		System.out.println(new File(".").getAbsolutePath());
 		
 		File[] foundFiles = dir.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
@@ -123,9 +126,10 @@ public class COSC422_Project3 {
 		System.out.println("Size of foundFiles is " + foundFiles.length);
 
 		for (File file : foundFiles) {
+			System.out.println(file.getName());
 			//for each student file, add the name to the student name string
 			//get all student files and add to prolog 
-			engine.deterministicGoal("getStudent('"+ file.getAbsolutePath() + "')");
+			engine.deterministicGoal("getStudent('"+ file.getName() + "')");
 			
 			TermModel list = nonDeterministicGoal("X", "name(X)");
 			if (list == null){
@@ -142,8 +146,8 @@ public class COSC422_Project3 {
 
 	public void getCourses(){
 			
-		File file = new File("courseNames.txt");
-		engine.deterministicGoal("getCourses('"+ file.getAbsolutePath() + "')");
+		File file = new File("./courseNames.txt");
+		engine.deterministicGoal("getCourses('"+ file.getName() + "')");
 		
 		TermModel list = nonDeterministicGoal("X", "course(X)");
 		if (list == null){
