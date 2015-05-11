@@ -46,21 +46,24 @@ public class DisplayWindow extends JFrame {
 	JTextArea nextSemesterField = new JTextArea();
 	JTextArea coursePrereqField = new JTextArea();
 	//labels
+	JLabel getStudentLabel = new JLabel("Current Student");
 	JLabel coursesTakenLabel = new JLabel("Courses Taken");
 	JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
 	JLabel nextSemesterLabel = new JLabel("Courses You Can Take Next Semester");
 	JLabel coursePrereqLabel = new JLabel("Course Pre-reqs");
 	JLabel semesterLabel = new JLabel("Current Semester");
 
+
 	// constructor
 	public DisplayWindow() {
 		createGroupLayout();
+		
 		semesterField.addItem("Spring Even");
 		semesterField.addItem("Fall Even");
 		semesterField.addItem("Spring Odd");
 		semesterField.addItem("Fall Odd");
-
-		containerPanel.setPreferredSize(new Dimension(400, 600));
+		
+		containerPanel.setPreferredSize(new Dimension(800, 600));
 		//frame.setLocationRelativeTo(null);
 		frame.pack();
 		frame.setVisible(true);
@@ -193,6 +196,7 @@ public class DisplayWindow extends JFrame {
 				.createParallelGroup()
 				.addComponent(semesterLabel)
 				.addComponent(semesterField));
+		
 		semesterPanelLayout.setVerticalGroup(semesterPanelLayout
 				.createSequentialGroup()
 				.addComponent(semesterLabel)
@@ -208,14 +212,21 @@ public class DisplayWindow extends JFrame {
 		studentNamePanelLayout.setAutoCreateContainerGaps(true);
 
 		studentNamePanelLayout.setHorizontalGroup(studentNamePanelLayout
-				.createSequentialGroup()
-				.addComponent(studentNameField)
-				.addComponent(getStudentBtn));
+				.createParallelGroup()
+				.addComponent(getStudentLabel)
+				.addGroup(studentNamePanelLayout
+						.createSequentialGroup()
+						.addComponent(studentNameField)
+						.addComponent(getStudentBtn)));
 
 		studentNamePanelLayout.setVerticalGroup(studentNamePanelLayout
-				.createParallelGroup()
-				.addComponent(studentNameField)
-				.addComponent(getStudentBtn));
+				.createSequentialGroup()
+					.addGroup(studentNamePanelLayout.createSequentialGroup()
+						.addComponent(getStudentLabel))
+						.addGroup(studentNamePanelLayout
+								.createParallelGroup()
+								.addComponent(studentNameField)
+								.addComponent(getStudentBtn)));
 
 		// coursesTakenPanel layout
 		javax.swing.GroupLayout coursesTakenpanelLayout = new GroupLayout(
@@ -292,23 +303,33 @@ public class DisplayWindow extends JFrame {
 		containerPanel.setLayout(containerPanelLayout);
 		containerPanelLayout.setAutoCreateContainerGaps(true);
 		containerPanelLayout.setAutoCreateGaps(true);
-		containerPanelLayout.setHorizontalGroup(containerPanelLayout
-				.createParallelGroup()
-				.addComponent(semesterPanel)
-				.addComponent(studentNamePanel)
-				.addComponent(coursesTakenPanel)
-				.addComponent(coursesNeededPanel)
-				.addComponent(nextSemesterPanel)
-				.addComponent(coursePrereqPanel));
-		containerPanelLayout.setVerticalGroup(containerPanelLayout
+		containerPanelLayout.setHorizontalGroup(containerPanelLayout.createParallelGroup()
+				.addGroup(containerPanelLayout
 				.createSequentialGroup()
 				.addComponent(semesterPanel)
-				.addComponent(studentNamePanel)
+				.addComponent(studentNamePanel))
+					.addComponent(coursesTakenPanel)
+					.addComponent(coursesNeededPanel)
+					.addComponent(nextSemesterPanel)
+					.addComponent(coursePrereqPanel));
+		containerPanelLayout.setVerticalGroup(containerPanelLayout.createSequentialGroup()
+				.addGroup(containerPanelLayout
+				.createParallelGroup()
+				.addComponent(semesterPanel)
+				.addComponent(studentNamePanel))
+				.addGroup(containerPanelLayout.createSequentialGroup()
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
 				.addComponent(nextSemesterPanel)
-				.addComponent(coursePrereqPanel));
+				.addComponent(coursePrereqPanel)));
+		
 		// set panel sizes
+		studentNamePanel.setMaximumSize(new Dimension(400,60));
+		studentNamePanel.setPreferredSize(new Dimension(350, 60));
+		semesterPanel.setMaximumSize(new Dimension(400, 60));
+		semesterPanel.setPreferredSize(new Dimension(350, 60));
+		courseListField.setPreferredSize(new Dimension(100,60));
+		courseListField.setMaximumSize(new Dimension(100,60));
 		
 		frame.add(containerPanel);
 	}
