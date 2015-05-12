@@ -201,7 +201,7 @@ public class DisplayWindow extends JFrame {
 		}
 	}
 	// Button Listeners
-	public void addSubmitButtonActionListener(ActionListener listener) {
+	public void addStudentButtonActionListener(ActionListener listener) {
 		getStudentBtn.addActionListener(listener);
 	}
 	// getCoursePrereqBtn Button Listener

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
+@SuppressWarnings("serial")
 public class AllCoursesPanel extends JFrame {
 	JPanel allCoursesPanel = new JPanel();
 	JLabel allCoursesLabel = new JLabel("All Available Courses");

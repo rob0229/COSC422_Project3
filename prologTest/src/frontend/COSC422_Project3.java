@@ -35,13 +35,13 @@ public class COSC422_Project3 {
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 
 	
-		dw.addSubmitButtonActionListener(new ActionListener() {
+		dw.addStudentButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(dw.getStudentName());	
 				getCoursesTaken(dw.getStudentName());
-				getCoursesNeeded(dw.getStudentName());
-				getNextSemesterCourses(dw.getStudentName());
+				getCoursesNeeded();
+				getNextSemesterCourses();
 			}
 		});
 		
@@ -54,36 +54,20 @@ public class COSC422_Project3 {
 		});
 	}
 	
-	private void getNextSemesterCourses(String name) {
-		TermModel list = nonDeterministicGoal("X", "eligibleToTake(X)");
-		if (list == null){
-			throw new RuntimeException("Prolog eligibleToTake goal should not have failed!");
-		}
-		if (list.isList()) {
-			System.out.println("List is: "+list);
-			dw.setNextSemesterCourses(convertTermModeltoArrayList(list));
-		}else{ 
-			System.out.println("Error in getNextSemesterCourse()");
-		}
+	private void getNextSemesterCourses() {
+		ArrayList<String> courses = getNonDeterministicGoalList("X", "eligibleToTake(X)", "eligibleToTake", "getNextSemesterCourses()");
+		dw.setNextSemesterCourses(courses);
 	}
 	
 	private void getCoursePrereq(String courseName){
 		File filetoopen = new File(PREREQPATH);
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 		
-		TermModel list = nonDeterministicGoal("X" , "prereq("+courseName+", X)");
-		if (list == null){
-			throw new RuntimeException("Prolog getCourses goal should not have failed!");
-		}
-		if (list.isList()) {
-			System.out.println("List is: "+list);
-			dw.setCoursePrereq(convertTermModeltoArrayList(list));
-		}else{ 
-			System.out.println("Error in getCoursesTaken()");
-		}	
+		ArrayList<String> prereqs = getNonDeterministicGoalList("X" , "prereq("+courseName+", X)", "getPrereq", "getCoursesPrereq()");
+		dw.setCoursePrereq(prereqs);
 	}
 
-	private void getCoursesNeeded(String name) {
+	private void getCoursesNeeded() {
 		File filetoopen = new File(DEGREEREQPATH);
 		engine.deterministicGoal("getDegreeRequirements('"+ filetoopen.getName() + "')");
 		
@@ -121,17 +105,12 @@ public class COSC422_Project3 {
 		File filetoopen = new File("./"+STUDENT+splitName[0]+"_"+splitName[1]+".txt");
 		
 		System.out.println("filename path: "+filetoopen.getAbsolutePath());
+		engine.deterministicGoal("retractall(taken(_))");
+		engine.deterministicGoal("retractall(planTaken(_))");
 		engine.deterministicGoal("getCourses('"+ filetoopen.getName() + "')");
 		
-		TermModel list = nonDeterministicGoal("X", "taken(X)");
-		if (list == null){
-			throw new RuntimeException("Prolog getCourses goal should not have failed!");
-		}
-		if (list.isList()) {
-			dw.setCoursesTaken(convertTermModeltoArrayList(list));
-		}else{ 
-			System.out.println("Error in getCoursesTaken()");
-		}	
+		ArrayList<String> taken = getNonDeterministicGoalList("X" , "taken(X)", "taken", "getCoursesTaken()");
+		dw.setCoursesTaken(taken);
 	}
 	
 	public void getStudentNames(){
@@ -150,17 +129,11 @@ public class COSC422_Project3 {
 			//for each student file, add the name to the student name string
 			//get all student files and add to prolog 
 			engine.deterministicGoal("getStudent('"+ file.getName() + "')");
+			engine.deterministicGoal("getStudent('"+ file.getName() + "')");
 			
-			TermModel list = nonDeterministicGoal("X", "name(X)");
-			if (list == null){
-				throw new RuntimeException("Prolog getCourses goal should not have failed!");
-			}
-			if (list.isList()) {
-				studentNames.add(convertTermModeltoArrayList(list).get(0));
-				dw.addStudentNames(convertTermModeltoArrayList(list).get(0));
-			}else{ 
-				System.out.println("Error in getCoursesTaken()");
-			}	
+			ArrayList<String> names = getNonDeterministicGoalList("X", "name(X)", "getStudent", "getStudentNames()");
+			studentNames.add(names.get(0));
+			dw.addStudentNames(names.get(0));
 		}
 	}
 
@@ -169,21 +142,32 @@ public class COSC422_Project3 {
 		File file = new File(COURSEPATH);
 		engine.deterministicGoal("getCourses('"+ file.getName() + "')");
 		
-		TermModel list = nonDeterministicGoal("X", "course(X)");
-		if (list == null){
-			throw new RuntimeException("Prolog getCourses goal should not have failed!");
-		}
-		if (list.isList()) {
-			dw.setCourses(convertTermModeltoArrayList(list));
-		}else{ 
-			System.out.println("Error in getCoursesTaken()");
-		}		
+		ArrayList<String> courses = getNonDeterministicGoalList("X", "course(X)", "getCourses", "getCourses()");
+		System.out.println("Course list is: "+courses);
+		dw.setCourses(courses);
 	}
 	
 	//helper function for template goals to prolog
 	public TermModel nonDeterministicGoal(String variables, String goal) {
 		String fullgoal = "nonDeterministicGoal(" + variables + "," + goal + ",ListModel)";
 		return (TermModel) (engine.deterministicGoal(fullgoal, "[ListModel]")[0]);
+	}
+	
+	//helper function to make a list out of a nonDeterministicGoal call
+	public ArrayList<String> getNonDeterministicGoalList(String variables, String goal) {
+		return getNonDeterministicGoalList(variables, goal, "Unknown", "Unknown");
+	}
+	public ArrayList<String> getNonDeterministicGoalList(String variables, String goal, String goalName, String funcName) {
+		TermModel list = nonDeterministicGoal(variables, goal);
+		if (list == null) {
+			throw new RuntimeException("Prolog " + goalName + " goal should not have failed!");
+		}
+		if (list.isList()) {
+			return convertTermModeltoArrayList(list);			
+		} else { 
+			System.out.println("Error calling " + funcName);
+		}
+		return null;
 	}
 
 	public static void main(String args[]) {
