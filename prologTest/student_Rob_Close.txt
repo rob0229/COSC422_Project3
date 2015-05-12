@@ -1,0 +1,19 @@
+name('Rob Close').
+taken(cosc117).
+taken(cosc120).
+taken(math201).
+taken(math202).
+taken(math210).
+taken(cosc250).
+taken(cosc220).
+taken(cosc320).
+taken(cosc330).
+taken(cosc350).
+taken(cosc450).
+taken(cosc362).
+taken(cosc386).
+taken(math293).
+taken(cosc390).
+taken(cosc422).
+taken(cosc425).
+taken(cosc426).

@@ -2,6 +2,7 @@ package frontend;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -22,38 +23,79 @@ public class DisplayWindow extends JFrame {
 	ArrayList<String> coursesNeeded = new ArrayList<String>();
 	ArrayList<String> studentNames = new ArrayList<String>();
 	ArrayList<String> nextSemesterCourses = new ArrayList<String>();
+	ArrayList<String> multiSemesterCourses = new ArrayList<String>();
 	ArrayList<String> coursePrereq = new ArrayList<String>();
 	//frame
 	JFrame frame = new JFrame("Math & Computer Science Degree Course Monitor");
-	//panels
+	//Panels
 	JPanel containerPanel = new JPanel();
-	JPanel studentNamePanel = new JPanel();
-	JPanel coursesTakenPanel = new JPanel();
-	JPanel coursesNeededPanel = new JPanel();
-	JPanel nextSemesterPanel = new JPanel();
-	JPanel coursePrereqPanel = new JPanel();
-	JPanel semesterPanel = new JPanel();
+		//Course info panels
+		JPanel courseInfoContainerPanel = new JPanel();
+		JPanel coursePrereqPanel = new JPanel();
+		JPanel modifyElectivePanel = new JPanel();
+		JPanel modifyRequiredCoursePanel = new JPanel();
+		
+		//Student Info Panels
+		JPanel studentInfoContainerPanel = new JPanel();
+		JPanel studentNamePanel = new JPanel();
+		JPanel coursesTakenPanel = new JPanel();
+		JPanel coursesNeededPanel = new JPanel();
+		JPanel nextSemesterPanel = new JPanel();
+		JPanel currentSemesterPanel = new JPanel();
+		JPanel multiSemesterPanel = new JPanel();
+		JPanel addTakenCoursePanel = new JPanel();
+		JPanel addFailedCoursePanel = new JPanel();
+	
 	//buttons
-	JButton getScheduleOptions = new JButton("Show Schedule Options");
-	JButton getStudentBtn = new JButton("Get Student");
-	JButton getCoursePrereqBtn = new JButton("Get Pre-reqs");
+		//Course Info Btns
+		JButton getCoursePrereqBtn = new JButton("Get Pre-reqs");
+		JButton addElectiveBtn = new JButton("Add Elective");
+		JButton removeElectiveBtn = new JButton("Remove Elective");
+		JButton addRequiredCourseBtn = new JButton("Add Course");
+		JButton removeRequiredCourseBtn = new JButton("Remove Course");
+	
+		//Student Info Btns
+		JButton getMultiSemesterPlan = new JButton("Show Multi Semester Plan");
+		JButton getStudentBtn = new JButton("Get Student");
+		JButton exportMultiPlanBtn = new JButton("Export Degree Plan");
+		JButton addTakenCourseBtn = new JButton("Add Course");
+		JButton addFailedCourseBtn = new JButton("Add Failed Course");
+	
 	//text fields
-	JComboBox<String> studentNameField = new JComboBox<String>();
-	JComboBox<String> courseListField = new JComboBox<String>();
-	JComboBox<String> semesterField = new JComboBox<String>();
-	JTextArea coursesTakenField = new JTextArea();
-	JTextArea coursesNeededField = new JTextArea();
-	JTextArea nextSemesterField = new JTextArea();
-	JTextArea coursePrereqField = new JTextArea();
+		//Course Info Fields
+		JComboBox<String> courseListField = new JComboBox<String>();
+		JTextArea coursePrereqField = new JTextArea();
+		JTextArea modifyElectiveField = new JTextArea();
+		JTextArea modifyRequiredCourseField = new JTextArea();
+		
+		//Student Info Fields
+		JComboBox<String> semesterField = new JComboBox<String>();
+		JComboBox<String> studentNameField = new JComboBox<String>();
+		JTextArea coursesTakenField = new JTextArea();
+		JTextArea coursesNeededField = new JTextArea();
+		JTextArea nextSemesterField = new JTextArea();
+		JTextArea multiSemesterField = new JTextArea();
+		JTextArea addTakenCourseField = new JTextArea();
+		JTextArea addFailedCourseField = new JTextArea();
+		
 	//labels
-	JLabel getStudentLabel = new JLabel("Current Student");
-	JLabel coursesTakenLabel = new JLabel("Courses Taken");
-	JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
-	JLabel nextSemesterLabel = new JLabel("Courses You Can Take Next Semester");
-	JLabel coursePrereqLabel = new JLabel("Course Pre-reqs");
-	JLabel semesterLabel = new JLabel("Current Semester");
-
-
+		//Course Info Labels
+		JLabel courseInfoLabel = new JLabel("Course Information and Degree Paths");
+		JLabel coursePrereqLabel = new JLabel("Course Pre-reqs");
+		JLabel modifyElectivesLabel = new JLabel("Add/Remove Electives");
+		JLabel modifyRequiredCoursesLabel = new JLabel("Add/Remove Required Courses");
+		JLabel Label = new JLabel("Course Pre-reqs");
+		//Student Info Labels
+		JLabel studentInfoLabel = new JLabel("Individual Student Information");
+		JLabel semesterLabel = new JLabel("Current Semester");
+		JLabel currentStudentLabel = new JLabel("Current Student");
+		JLabel coursesTakenLabel = new JLabel("Courses Taken");
+		JLabel coursesNeededLabel = new JLabel("Courses Needed To Graduate");
+		JLabel nextSemesterLabel = new JLabel("Courses You Can Take Next Semester");
+		JLabel multiSemesterLabel = new JLabel("Multi-Semester Plan");
+		JLabel addTakenCourseLabel = new JLabel("Add a Completed Course. (ex cosc422)");
+		JLabel addFailedCourseLabel = new JLabel("Add a Failed Course. (ex cosc450)");
+	
 	// constructor
 	public DisplayWindow() {
 		createGroupLayout();
@@ -63,8 +105,8 @@ public class DisplayWindow extends JFrame {
 		semesterField.addItem("Spring Odd");
 		semesterField.addItem("Fall Odd");
 		
-		containerPanel.setPreferredSize(new Dimension(800, 600));
-		//frame.setLocationRelativeTo(null);
+		containerPanel.setPreferredSize(new Dimension(1000, 700));
+		
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -131,7 +173,6 @@ public class DisplayWindow extends JFrame {
 				if(i%4 == 0 && i>3){
 					coursesNeededField.append("\n");
 				}
-		
 			}
 			coursesNeededField.append("]");
 		}
@@ -169,26 +210,15 @@ public class DisplayWindow extends JFrame {
 	//Layout function	
 	private void createGroupLayout() {
 		
-		// set border layouts
-		semesterPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		containerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		studentNamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		coursesTakenPanel
-				.setBorder(BorderFactory.createLineBorder(Color.black));
-		coursesNeededPanel.setBorder(BorderFactory
-				.createLineBorder(Color.black));
-		nextSemesterPanel
-				.setBorder(BorderFactory.createLineBorder(Color.black));
-
 		// set background colors
-		semesterPanel.setBackground(Color.blue);
-		studentNamePanel.setBackground(Color.CYAN);
-		coursesTakenPanel.setBackground(Color.magenta);
-		containerPanel.setBackground(Color.green);
+		containerPanel.setBackground(Color.red);
 
 		//semester panel layout
-		javax.swing.GroupLayout semesterPanelLayout = new GroupLayout(semesterPanel);
-		semesterPanel.setLayout(semesterPanelLayout);
+		currentSemesterPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		currentSemesterPanel.setMaximumSize(new Dimension(400, 60));
+		currentSemesterPanel.setPreferredSize(new Dimension(350, 60));
+		javax.swing.GroupLayout semesterPanelLayout = new GroupLayout(currentSemesterPanel);
+		currentSemesterPanel.setLayout(semesterPanelLayout);
 		semesterPanelLayout.setAutoCreateGaps(true);
 		semesterPanelLayout.setAutoCreateContainerGaps(true);
 		
@@ -202,10 +232,11 @@ public class DisplayWindow extends JFrame {
 				.addComponent(semesterLabel)
 				.addComponent(semesterField));
 		
-		
 		// Student Name Panel Layout
-		javax.swing.GroupLayout studentNamePanelLayout = new GroupLayout(
-				studentNamePanel);
+		studentNamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		studentNamePanel.setMaximumSize(new Dimension(400,60));
+		studentNamePanel.setPreferredSize(new Dimension(350, 60));
+		javax.swing.GroupLayout studentNamePanelLayout = new GroupLayout(studentNamePanel);
 		
 		studentNamePanel.setLayout(studentNamePanelLayout);
 		studentNamePanelLayout.setAutoCreateGaps(true);
@@ -213,7 +244,7 @@ public class DisplayWindow extends JFrame {
 
 		studentNamePanelLayout.setHorizontalGroup(studentNamePanelLayout
 				.createParallelGroup()
-				.addComponent(getStudentLabel)
+				.addComponent(currentStudentLabel)
 				.addGroup(studentNamePanelLayout
 						.createSequentialGroup()
 						.addComponent(studentNameField)
@@ -222,18 +253,16 @@ public class DisplayWindow extends JFrame {
 		studentNamePanelLayout.setVerticalGroup(studentNamePanelLayout
 				.createSequentialGroup()
 					.addGroup(studentNamePanelLayout.createSequentialGroup()
-						.addComponent(getStudentLabel))
+						.addComponent(currentStudentLabel))
 						.addGroup(studentNamePanelLayout
 								.createParallelGroup()
 								.addComponent(studentNameField)
 								.addComponent(getStudentBtn)));
 
 		// coursesTakenPanel layout
-		javax.swing.GroupLayout coursesTakenpanelLayout = new GroupLayout(
-				coursesTakenPanel);
-		//coursesTakenPanel.setPreferredSize(new Dimension(500, 200));
+		coursesTakenPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout coursesTakenpanelLayout = new GroupLayout(coursesTakenPanel);
 		coursesTakenPanel.setLayout(coursesTakenpanelLayout);
-
 		coursesTakenpanelLayout.setAutoCreateContainerGaps(true);
 		coursesTakenpanelLayout.setAutoCreateGaps(true);
 		coursesTakenpanelLayout.setHorizontalGroup(coursesTakenpanelLayout
@@ -246,38 +275,106 @@ public class DisplayWindow extends JFrame {
 				.addComponent(coursesTakenField));
 
 		// coursesNeededPanel layout
-		javax.swing.GroupLayout coursesNeededPanelLayout = new GroupLayout(
-				coursesNeededPanel);
-		//coursesNeededPanel.setPreferredSize(new Dimension(200, 400));
+		coursesNeededPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout coursesNeededPanelLayout = new GroupLayout(coursesNeededPanel);
 		coursesNeededPanel.setLayout(coursesNeededPanelLayout);
-
 		coursesNeededPanelLayout.setAutoCreateContainerGaps(true);
 		coursesNeededPanelLayout.setAutoCreateGaps(true);
 		coursesNeededPanelLayout.setHorizontalGroup(coursesNeededPanelLayout
-				.createParallelGroup().addComponent(coursesNeededLabel)
+				.createParallelGroup()
+				.addComponent(coursesNeededLabel)
 				.addComponent(coursesNeededField));
 		coursesNeededPanelLayout.setVerticalGroup(coursesNeededPanelLayout
-				.createSequentialGroup().addComponent(coursesNeededLabel)
+				.createSequentialGroup()
+				.addComponent(coursesNeededLabel)
 				.addComponent(coursesNeededField));
 
 		// nextSemesterPanel layout
-		javax.swing.GroupLayout nextSemesterPanelLayout = new GroupLayout(
-				nextSemesterPanel);
+		nextSemesterPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout nextSemesterPanelLayout = new GroupLayout(nextSemesterPanel);
 		nextSemesterPanel.setLayout(nextSemesterPanelLayout);
-
 		nextSemesterPanelLayout.setAutoCreateContainerGaps(true);
 		nextSemesterPanelLayout.setAutoCreateGaps(true);
 		nextSemesterPanelLayout.setHorizontalGroup(nextSemesterPanelLayout
-				.createParallelGroup().addComponent(nextSemesterLabel)
+				.createParallelGroup()
+				.addComponent(nextSemesterLabel)
 				.addComponent(nextSemesterField));
 		nextSemesterPanelLayout.setVerticalGroup(nextSemesterPanelLayout
-				.createSequentialGroup().addComponent(nextSemesterLabel)
+				.createSequentialGroup()
+				.addComponent(nextSemesterLabel)
 				.addComponent(nextSemesterField));
-
+		
+		//Multi semester Panel Layout
+		multiSemesterPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout multiSemesterPanelLayout = new GroupLayout(multiSemesterPanel);
+		multiSemesterPanel.setLayout(multiSemesterPanelLayout);
+		multiSemesterPanelLayout.setAutoCreateContainerGaps(true);
+		multiSemesterPanelLayout.setAutoCreateGaps(true);
+		multiSemesterPanelLayout.setHorizontalGroup(multiSemesterPanelLayout
+				.createParallelGroup()
+				.addComponent(multiSemesterLabel)
+				.addGroup(multiSemesterPanelLayout.createSequentialGroup()
+				.addComponent(multiSemesterField)
+				.addComponent(getMultiSemesterPlan)));
+		multiSemesterPanelLayout.setVerticalGroup(multiSemesterPanelLayout
+				.createSequentialGroup()
+				.addComponent(multiSemesterLabel).addGroup(multiSemesterPanelLayout
+						.createParallelGroup()
+				.addComponent(multiSemesterField)
+				.addComponent(getMultiSemesterPlan)));
+		
+		//addTakenCourse panel Layout
+		addTakenCoursePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout addTakenCoursePanelLayout = new GroupLayout(addTakenCoursePanel);
+		addTakenCoursePanel.setLayout(addTakenCoursePanelLayout);
+		addTakenCoursePanelLayout.setAutoCreateGaps(true);
+		addTakenCoursePanelLayout.setAutoCreateContainerGaps(true);
+		addTakenCoursePanelLayout.setHorizontalGroup(addTakenCoursePanelLayout
+				.createParallelGroup()
+				.addComponent(addTakenCourseLabel)
+				.addGroup(addTakenCoursePanelLayout
+						.createSequentialGroup()
+						.addComponent(addTakenCourseField)
+						.addComponent(addTakenCourseBtn)));
+		addTakenCoursePanelLayout.setVerticalGroup(addTakenCoursePanelLayout
+				.createSequentialGroup()
+				.addComponent(addTakenCourseLabel)
+				.addGroup(addTakenCoursePanelLayout
+						.createParallelGroup()
+						.addComponent(addTakenCourseField)
+						.addComponent(addTakenCourseBtn)));
+		
+		//addFailedCourse panel Layout
+		addFailedCoursePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout addFailedCoursePanelLayout = new GroupLayout(addFailedCoursePanel);
+		addFailedCoursePanel.setLayout(addFailedCoursePanelLayout);
+		addFailedCoursePanelLayout.setAutoCreateGaps(true);
+		addFailedCoursePanelLayout.setAutoCreateContainerGaps(true);
+		addFailedCoursePanelLayout.setHorizontalGroup(addFailedCoursePanelLayout
+				.createParallelGroup()
+				.addComponent(addFailedCourseLabel)
+				.addGroup(addFailedCoursePanelLayout
+						.createSequentialGroup()
+						.addComponent(addFailedCourseField)
+						.addComponent(addFailedCourseBtn)));
+		addFailedCoursePanelLayout.setVerticalGroup(addFailedCoursePanelLayout
+				.createSequentialGroup()
+				.addComponent(addFailedCourseLabel)
+				.addGroup(addFailedCoursePanelLayout
+						.createParallelGroup()
+						.addComponent(addFailedCourseField)
+						.addComponent(addFailedCourseBtn)));
+		
 		// coursePrereqPanel layout
+		coursePrereqPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		coursePrereqPanel.setPreferredSize(new Dimension(480,60));
+		coursePrereqPanel.setMaximumSize(new Dimension(480,60));
+		coursePrereqField.setPreferredSize(new Dimension(200,60));
+		coursePrereqField.setMaximumSize(new Dimension(200,60));
+		courseListField.setPreferredSize(new Dimension(100,60));
+		courseListField.setMaximumSize(new Dimension(100,60));
 		javax.swing.GroupLayout coursePrereqPanelLayout = new GroupLayout(coursePrereqPanel);
 		coursePrereqPanel.setLayout(coursePrereqPanelLayout);
-
 		coursePrereqPanelLayout.setAutoCreateContainerGaps(true);
 		coursePrereqPanelLayout.setAutoCreateGaps(true);
 		coursePrereqPanelLayout.setHorizontalGroup(coursePrereqPanelLayout
@@ -297,39 +394,130 @@ public class DisplayWindow extends JFrame {
 							.addComponent(courseListField)
 							.addComponent(getCoursePrereqBtn)));
 		
-		// containerPanel layout
-		javax.swing.GroupLayout containerPanelLayout = new GroupLayout(
-				containerPanel);
-		containerPanel.setLayout(containerPanelLayout);
-		containerPanelLayout.setAutoCreateContainerGaps(true);
-		containerPanelLayout.setAutoCreateGaps(true);
-		containerPanelLayout.setHorizontalGroup(containerPanelLayout.createParallelGroup()
-				.addGroup(containerPanelLayout
+		//modifyElectivePanel Layout
+		modifyElectivePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		modifyElectivePanel.setPreferredSize(new Dimension(480,60));
+		modifyElectivePanel.setMaximumSize(new Dimension(480,60));
+		javax.swing.GroupLayout modifyElectivePanelLayout = new GroupLayout(modifyElectivePanel);
+		modifyElectivePanel.setLayout(modifyElectivePanelLayout);
+		modifyElectivePanelLayout.setAutoCreateContainerGaps(true);
+		modifyElectivePanelLayout.setAutoCreateGaps(true);
+		modifyElectivePanelLayout.setHorizontalGroup(modifyElectivePanelLayout
+				.createParallelGroup()
+				.addComponent(modifyElectivesLabel)
+				.addGroup(modifyElectivePanelLayout
+						.createSequentialGroup()
+						.addComponent(modifyElectiveField)
+						.addComponent(addElectiveBtn)
+						.addComponent(removeElectiveBtn)));
+		modifyElectivePanelLayout.setVerticalGroup(modifyElectivePanelLayout
 				.createSequentialGroup()
-				.addComponent(semesterPanel)
+				.addComponent(modifyElectivesLabel)
+				.addGroup(modifyElectivePanelLayout
+						.createParallelGroup()
+						.addComponent(modifyElectiveField)
+						.addComponent(addElectiveBtn)
+						.addComponent(removeElectiveBtn)));
+		
+		//modifyRequiredPanel layout
+		modifyRequiredCoursePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		modifyRequiredCourseField.setPreferredSize(new Dimension(480, 120));
+		modifyRequiredCourseField.setMaximumSize(new Dimension(480, 120));
+		javax.swing.GroupLayout modifyRequiredPanelLayout = new GroupLayout(modifyRequiredCoursePanel);
+		modifyRequiredCoursePanel.setLayout(modifyRequiredPanelLayout);
+		modifyRequiredPanelLayout.setAutoCreateContainerGaps(true);
+		modifyRequiredPanelLayout.setAutoCreateGaps(true);
+		modifyRequiredPanelLayout.setHorizontalGroup(modifyRequiredPanelLayout
+				.createParallelGroup()
+				.addComponent(modifyRequiredCoursesLabel)
+				.addGroup(modifyRequiredPanelLayout
+						.createSequentialGroup()
+						.addComponent(modifyRequiredCourseField)
+						.addComponent(addRequiredCourseBtn)
+						.addComponent(removeRequiredCourseBtn)));
+		modifyRequiredPanelLayout.setVerticalGroup(modifyRequiredPanelLayout
+				.createSequentialGroup()
+				.addComponent(modifyRequiredCoursesLabel)
+				.addGroup(modifyRequiredPanelLayout
+						.createParallelGroup()
+						.addComponent(modifyRequiredCourseField)
+						.addComponent(addRequiredCourseBtn)
+						.addComponent(removeRequiredCourseBtn)));
+		
+		
+		//courseInfoPanel Layout
+		courseInfoLabel.setFont(new Font("Courier New", Font.BOLD, 20));
+		courseInfoContainerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		courseInfoContainerPanel.setPreferredSize(new Dimension(490, 700));
+		courseInfoContainerPanel.setMaximumSize(new Dimension(490, 700));
+		javax.swing.GroupLayout courseInfoPanelLayout = new GroupLayout(courseInfoContainerPanel);
+		courseInfoContainerPanel.setLayout(courseInfoPanelLayout);
+		courseInfoPanelLayout.setAutoCreateContainerGaps(true);
+		courseInfoPanelLayout.setAutoCreateGaps(true);
+		courseInfoPanelLayout.setHorizontalGroup(courseInfoPanelLayout
+				.createParallelGroup()
+				.addComponent(courseInfoLabel)
+				.addComponent(coursePrereqPanel)
+				.addComponent(modifyElectivePanel)
+				.addComponent(modifyRequiredCoursePanel));
+				
+		courseInfoPanelLayout.setVerticalGroup(courseInfoPanelLayout
+				.createSequentialGroup()
+				.addComponent(courseInfoLabel)
+				.addComponent(coursePrereqPanel)
+				.addComponent(modifyElectivePanel)
+				.addComponent(modifyRequiredCoursePanel));
+
+		// studentPanel layout
+		studentInfoContainerPanel.setPreferredSize(new Dimension(490, 700));
+		studentInfoContainerPanel.setMaximumSize(new Dimension(490, 700));
+		studentInfoLabel.setFont(new Font("Courier New", Font.BOLD, 20));
+		studentInfoContainerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout studentPanelLayout = new GroupLayout(
+				studentInfoContainerPanel);
+		studentInfoContainerPanel.setLayout(studentPanelLayout);
+		studentPanelLayout.setAutoCreateContainerGaps(true);
+		studentPanelLayout.setAutoCreateGaps(true);
+		studentPanelLayout.setHorizontalGroup(studentPanelLayout.createParallelGroup()
+				.addComponent(studentInfoLabel)
+				.addGroup(studentPanelLayout
+				.createSequentialGroup()
+				.addComponent(currentSemesterPanel)
 				.addComponent(studentNamePanel))
 					.addComponent(coursesTakenPanel)
 					.addComponent(coursesNeededPanel)
 					.addComponent(nextSemesterPanel)
-					.addComponent(coursePrereqPanel));
-		containerPanelLayout.setVerticalGroup(containerPanelLayout.createSequentialGroup()
-				.addGroup(containerPanelLayout
+					.addComponent(multiSemesterPanel)
+					.addComponent(addTakenCoursePanel)
+					.addComponent(addFailedCoursePanel));
+					
+		studentPanelLayout.setVerticalGroup(studentPanelLayout.createSequentialGroup()
+				.addComponent(studentInfoLabel)
+				.addGroup(studentPanelLayout
 				.createParallelGroup()
-				.addComponent(semesterPanel)
+				.addComponent(currentSemesterPanel)
 				.addComponent(studentNamePanel))
-				.addGroup(containerPanelLayout.createSequentialGroup()
+				.addGroup(studentPanelLayout.createSequentialGroup()
 				.addComponent(coursesTakenPanel)
 				.addComponent(coursesNeededPanel)
 				.addComponent(nextSemesterPanel)
-				.addComponent(coursePrereqPanel)));
+				.addComponent(multiSemesterPanel)
+				.addComponent(addTakenCoursePanel)
+				.addComponent(addFailedCoursePanel)));
 		
-		// set panel sizes
-		studentNamePanel.setMaximumSize(new Dimension(400,60));
-		studentNamePanel.setPreferredSize(new Dimension(350, 60));
-		semesterPanel.setMaximumSize(new Dimension(400, 60));
-		semesterPanel.setPreferredSize(new Dimension(350, 60));
-		courseListField.setPreferredSize(new Dimension(100,60));
-		courseListField.setMaximumSize(new Dimension(100,60));
+		//ContainerPanel layout
+		containerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		javax.swing.GroupLayout containerPanelLayout = new GroupLayout(containerPanel);
+		containerPanel.setLayout(containerPanelLayout);
+		containerPanelLayout.setAutoCreateContainerGaps(true);
+		containerPanelLayout.setAutoCreateGaps(true);
+		containerPanelLayout.setHorizontalGroup(containerPanelLayout.createSequentialGroup()
+				.addComponent(courseInfoContainerPanel)
+				.addComponent(studentInfoContainerPanel));	
+		containerPanelLayout.setVerticalGroup(containerPanelLayout
+				.createParallelGroup()
+				.addComponent(courseInfoContainerPanel)
+				.addComponent(studentInfoContainerPanel));
 		
 		frame.add(containerPanel);
 	}
