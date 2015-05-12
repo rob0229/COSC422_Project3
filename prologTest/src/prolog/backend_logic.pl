@@ -28,3 +28,4 @@ electivesTaken(X) :- degreeElectives(X), taken(X).
 electivesToTake(X) :- degreeElectives(X), not taken(X).
 
 takenResearch() :- taken(cosc380); taken(cosc390); taken(cosc495).
+

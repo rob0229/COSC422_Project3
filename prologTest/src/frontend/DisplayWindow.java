@@ -28,6 +28,7 @@ public class DisplayWindow extends JFrame {
 	//frame
 	JFrame frame = new JFrame("Math & Computer Science Degree Course Monitor");
 	//Panels
+	AllCoursesPanel allCoursesPanel = new AllCoursesPanel();
 	JPanel containerPanel = new JPanel();
 		//Course info panels
 		JPanel courseInfoContainerPanel = new JPanel();
@@ -459,14 +460,16 @@ public class DisplayWindow extends JFrame {
 				.addComponent(courseInfoLabel)
 				.addComponent(coursePrereqPanel)
 				.addComponent(modifyElectivePanel)
-				.addComponent(modifyRequiredCoursePanel));
+				.addComponent(modifyRequiredCoursePanel)
+				.addComponent(allCoursesPanel.getPanel()));
 				
 		courseInfoPanelLayout.setVerticalGroup(courseInfoPanelLayout
 				.createSequentialGroup()
 				.addComponent(courseInfoLabel)
 				.addComponent(coursePrereqPanel)
 				.addComponent(modifyElectivePanel)
-				.addComponent(modifyRequiredCoursePanel));
+				.addComponent(modifyRequiredCoursePanel)
+				.addComponent(allCoursesPanel.getPanel()));
 
 		// studentPanel layout
 		studentInfoContainerPanel.setPreferredSize(new Dimension(490, 700));
