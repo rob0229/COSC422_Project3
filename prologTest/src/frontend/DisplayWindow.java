@@ -68,6 +68,7 @@ public class DisplayWindow extends JFrame {
 		JTextArea coursePrereqField = new JTextArea();
 		JTextArea modifyElectiveField = new JTextArea();
 		JTextArea modifyRequiredCourseField = new JTextArea();
+		JTextArea allCourses = new JTextArea();
 		
 		//Student Info Fields
 		JComboBox<String> semesterField = new JComboBox<String>();
@@ -188,16 +189,31 @@ public class DisplayWindow extends JFrame {
 			}
 		}
 	}
+	public void setMultiSemesterCourses(ArrayList<String> s){
+		multiSemesterCourses = s;
+		multiSemesterField.setText("Next semester: ");
+		for(int i = 0; i<multiSemesterCourses.size();i++){
+			multiSemesterField.append(multiSemesterCourses.get(i)+"  ");
+			if((i+1)%3 == 0 && i>=2 && i != s.size() - 1){
+				multiSemesterField.append("\nNext semester: ");
+			}
+		}
+		
+	}
 	public String getStudentName(){
 		return (String) studentNameField.getSelectedItem();
 	}
 	public String getCourseName(){
 		return (String)courseListField.getSelectedItem();
 	}
+	public AllCoursesPanel getAllCoursesPanel(){
+		return allCoursesPanel;
+	}
 	public void setCourses(ArrayList<String> s){
 		courses=s;
 		for(int i = 0; i<courses.size();i++){
 			courseListField.addItem(courses.get(i));
+			
 		}
 	}
 	// Button Listeners
@@ -207,6 +223,12 @@ public class DisplayWindow extends JFrame {
 	// getCoursePrereqBtn Button Listener
 	public void addGetCoursePrereqButtonActionListener(ActionListener listener) {
 		getCoursePrereqBtn.addActionListener(listener);
+	}
+	public void addElectiveButtonActionListener(ActionListener listener) {
+		addElectiveBtn.addActionListener(listener);
+	}
+	public void addRequiredCourseButtonActionListener(ActionListener listener) {
+		addRequiredCourseBtn.addActionListener(listener);
 	}
 	//Layout function	
 	private void createGroupLayout() {
@@ -507,6 +529,7 @@ public class DisplayWindow extends JFrame {
 				.addComponent(multiSemesterPanel)
 				.addComponent(addTakenCoursePanel)
 				.addComponent(addFailedCoursePanel)));
+		
 		
 		//ContainerPanel layout
 		containerPanel.setBorder(BorderFactory.createLineBorder(Color.black));

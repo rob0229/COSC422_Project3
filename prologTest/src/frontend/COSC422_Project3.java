@@ -30,7 +30,8 @@ public class COSC422_Project3 {
 		engine.consultAbsolute(new File(PROLOGFILE));
 		getStudentNames();
 		getCourses();
-
+		getAllCoursesTextField();
+		
 		File filetoopen = new File(PREREQPATH);
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 
@@ -52,11 +53,36 @@ public class COSC422_Project3 {
 				getCoursePrereq(dw.getCourseName());
 			}	
 		});
+		
+		dw.addElectiveButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked addElective BTN "+dw.modifyElectiveField.getText());
+				engine.deterministicGoal("assert(course("+dw.modifyElectiveField.getText()+"))");
+				engine.deterministicGoal("assert(degreeElectives("+dw.modifyElectiveField.getText()+"))");
+				dw.modifyElectiveField.setText("");
+			}	
+		});		
+	
+		dw.addRequiredCourseButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked addCourse BTN "+dw.modifyRequiredCourseField.getText());
+				System.out.println(engine.deterministicGoal("assert(course("+dw.modifyRequiredCourseField.getText()+"))"));
+				System.out.println(engine.deterministicGoal("assert(degree("+dw.modifyRequiredCourseField.getText()+"))"));
+				dw.modifyRequiredCourseField.setText("");
+			}	
+		});		
 	}
 	
 	private void getNextSemesterCourses() {
 		ArrayList<String> courses = getNonDeterministicGoalList("X", "eligibleToTake(X)", "eligibleToTake", "getNextSemesterCourses()");
 		dw.setNextSemesterCourses(courses);
+	}
+	
+	private void getAllCoursesTextField(){
+		ArrayList<String> courses = getNonDeterministicGoalList("X" , "course(X)", "getCOurses", "getAllCoursesTextField");
+		dw.getAllCoursesPanel().setAllCoursesText(courses);
 	}
 	
 	private void getCoursePrereq(String courseName){
@@ -98,6 +124,16 @@ public class COSC422_Project3 {
 		else{
 			System.out.println("Error in getCoursesNeeded()");
 		}
+		
+
+		//add multi-semester plan
+		ArrayList<String> needed = getNonDeterministicGoalList("X", "multisem(X)", "multisem", "constructor()");
+		dw.setMultiSemesterCourses(needed);
+		
+		////		
+		
+		
+		
 	}
 
 	private void getCoursesTaken(String name) {		

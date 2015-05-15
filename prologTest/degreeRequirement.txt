@@ -1,6 +1,10 @@
+
+degreeList([cosc117, math201, math210, cosc120, math202, cosc390, cosc220, cosc250, math293, cosc320, cosc386, cosc362, cosc350, cosc425,cosc330, cosc450, cosc426, cosc422]). 
+
 degree(cosc117).
 degree(cosc120).
 degree(math201).
+degree(math202).
 degree(math210).
 degree(cosc220).
 degree(cosc250).

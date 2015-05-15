@@ -22,10 +22,12 @@ public class AllCoursesPanel extends JFrame {
 		
 		allCoursesPanelLayout.setHorizontalGroup(allCoursesPanelLayout
 				.createParallelGroup()
-				.addComponent(allCoursesLabel));
+				.addComponent(allCoursesLabel)
+				.addComponent(courseTextArea));
 		allCoursesPanelLayout.setVerticalGroup(allCoursesPanelLayout
 				.createSequentialGroup()
-				.addComponent(allCoursesLabel));
+				.addComponent(allCoursesLabel)
+				.addComponent(courseTextArea));
 	}
 	public JPanel getPanel(){
 		return allCoursesPanel;
@@ -33,7 +35,10 @@ public class AllCoursesPanel extends JFrame {
 	public void setAllCoursesText(ArrayList<String> s){
 		courseTextArea.setText("");
 		for(int i = 0; i<s.size();i++){
-			courseTextArea.append(s.get(i));
+			courseTextArea.append(s.get(i) + "  ");
+			if(i%5==0 && i>3){
+				courseTextArea.append("\n");
+			}
 		}
 	}
 
