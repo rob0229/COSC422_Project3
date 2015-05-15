@@ -36,53 +36,55 @@ public class COSC422_Project3 {
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 
 	
-		dw.addStudentButtonActionListener(new ActionListener() {
+		dw.studentNamePanel.addStudentButtonActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println(dw.getStudentName());	
-				getCoursesTaken(dw.getStudentName());
+				System.out.println(dw.studentNamePanel.getStudentName());	
+				getCoursesTaken(dw.studentNamePanel.getStudentName());
 				getCoursesNeeded();
 				getNextSemesterCourses();
 			}
 		});
 		
-		dw.addGetCoursePrereqButtonActionListener(new ActionListener(){
+		dw.coursePrereqPanel.addGetCoursePrereqButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Clicked getCoursePrereq BTN");
-				getCoursePrereq(dw.getCourseName());
+				getCoursePrereq(dw.coursePrereqPanel.getCourseName());
 			}	
 		});
 		
-		dw.addElectiveButtonActionListener(new ActionListener(){
+		dw.modifyElectivePanel.addElectiveButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Clicked addElective BTN "+dw.modifyElectiveField.getText());
-				engine.deterministicGoal("assert(course("+dw.modifyElectiveField.getText()+"))");
-				engine.deterministicGoal("assert(degreeElectives("+dw.modifyElectiveField.getText()+"))");
-				dw.modifyElectiveField.setText("");
+				System.out.println("Clicked addElective BTN "+dw.modifyElectivePanel.modifyElectiveField.getText());
+				engine.deterministicGoal("assert(course("+dw.modifyElectivePanel.modifyElectiveField.getText()+"))");
+				engine.deterministicGoal("assert(degreeElectives("+dw.modifyElectivePanel.modifyElectiveField.getText()+"))");
+				dw.modifyElectivePanel.modifyElectiveField.setText("");
+				getAllCoursesTextField();
 			}	
 		});		
 	
-		dw.addRequiredCourseButtonActionListener(new ActionListener(){
+		dw.modifyRequiredCoursePanel.addRequiredCourseButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Clicked addCourse BTN "+dw.modifyRequiredCourseField.getText());
-				System.out.println(engine.deterministicGoal("assert(course("+dw.modifyRequiredCourseField.getText()+"))"));
-				System.out.println(engine.deterministicGoal("assert(degree("+dw.modifyRequiredCourseField.getText()+"))"));
-				dw.modifyRequiredCourseField.setText("");
+				System.out.println("Clicked addCourse BTN "+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText());
+				System.out.println(engine.deterministicGoal("assert(course("+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText()+"))"));
+				System.out.println(engine.deterministicGoal("assert(degree("+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText()+"))"));
+				dw.modifyRequiredCoursePanel.modifyRequiredCourseField.setText("");
+				getAllCoursesTextField();
 			}	
 		});		
 	}
 	
 	private void getNextSemesterCourses() {
 		ArrayList<String> courses = getNonDeterministicGoalList("X", "eligibleToTake(X)", "eligibleToTake", "getNextSemesterCourses()");
-		dw.setNextSemesterCourses(courses);
+		dw.nextSemesterPanel.setNextSemesterCourses(courses);
 	}
 	
 	private void getAllCoursesTextField(){
 		ArrayList<String> courses = getNonDeterministicGoalList("X" , "course(X)", "getCOurses", "getAllCoursesTextField");
-		dw.getAllCoursesPanel().setAllCoursesText(courses);
+		dw.allCoursesPanel.setAllCoursesText(courses);
 	}
 	
 	private void getCoursePrereq(String courseName){
@@ -90,7 +92,7 @@ public class COSC422_Project3 {
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 		
 		ArrayList<String> prereqs = getNonDeterministicGoalList("X" , "prereq("+courseName+", X)", "getPrereq", "getCoursesPrereq()");
-		dw.setCoursePrereq(prereqs);
+		dw.coursePrereqPanel.setCoursePrereq(prereqs);
 	}
 
 	private void getCoursesNeeded() {
@@ -119,7 +121,7 @@ public class COSC422_Project3 {
 			}
 			if (numneeded < 0) numneeded = 0;
 			
-			dw.setCoursesNeeded(convertTermModeltoArrayList(required), convertTermModeltoArrayList(electives), numneeded, list1of3);
+			dw.coursesNeededPanel.setCoursesNeeded(convertTermModeltoArrayList(required), convertTermModeltoArrayList(electives), numneeded, list1of3);
 		}
 		else{
 			System.out.println("Error in getCoursesNeeded()");
@@ -128,11 +130,7 @@ public class COSC422_Project3 {
 
 		//add multi-semester plan
 		ArrayList<String> needed = getNonDeterministicGoalList("X", "multisem(X)", "multisem", "constructor()");
-		dw.setMultiSemesterCourses(needed);
-		
-		////		
-		
-		
+		dw.multiSemesterPanel.setMultiSemesterCourses(needed);
 		
 	}
 
@@ -146,7 +144,7 @@ public class COSC422_Project3 {
 		engine.deterministicGoal("getCourses('"+ filetoopen.getName() + "')");
 		
 		ArrayList<String> taken = getNonDeterministicGoalList("X" , "taken(X)", "taken", "getCoursesTaken()");
-		dw.setCoursesTaken(taken);
+		dw.coursesTakenPanel.setCoursesTaken(taken);
 	}
 	
 	public void getStudentNames(){
@@ -169,7 +167,7 @@ public class COSC422_Project3 {
 			
 			ArrayList<String> names = getNonDeterministicGoalList("X", "name(X)", "getStudent", "getStudentNames()");
 			studentNames.add(names.get(0));
-			dw.addStudentNames(names.get(0));
+			dw.studentNamePanel.addStudentNames(names.get(0));
 		}
 	}
 
@@ -180,7 +178,7 @@ public class COSC422_Project3 {
 		
 		ArrayList<String> courses = getNonDeterministicGoalList("X", "course(X)", "getCourses", "getCourses()");
 		System.out.println("Course list is: "+courses);
-		dw.setCourses(courses);
+		dw.coursePrereqPanel.setCourses(courses);
 	}
 	
 	//helper function for template goals to prolog

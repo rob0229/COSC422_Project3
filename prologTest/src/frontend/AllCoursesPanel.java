@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-
 @SuppressWarnings("serial")
 public class AllCoursesPanel extends JFrame {
 	JPanel allCoursesPanel = new JPanel();
@@ -30,6 +29,10 @@ public class AllCoursesPanel extends JFrame {
 				.addComponent(courseTextArea));
 	}
 	public JPanel getPanel(){
+		return allCoursesPanel;
+	}
+	//setter and getters
+	public JPanel getAllCoursesPanel(){
 		return allCoursesPanel;
 	}
 	public void setAllCoursesText(ArrayList<String> s){
