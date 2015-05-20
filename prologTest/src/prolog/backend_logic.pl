@@ -43,3 +43,8 @@ planTakenList([H|L]) :- planTaken(H), planTakenList(L).
 member(X,[X|T]).
 member(X,[H|T]) :- member(X,T).
 multisem(S) :- degreeList(X), member(S, X), not taken(S).
+
+
+%multiSemester(TK, []).
+%multiSemester(TK, [NL|NMF]):- nextSem(TK,NL), conc(TK,NL), multiSem(NTK,NMF).
+%nextSem(TK,[]).

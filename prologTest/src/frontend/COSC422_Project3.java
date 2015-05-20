@@ -31,8 +31,10 @@ public class COSC422_Project3 {
 		getStudentNames();
 		getCourses();
 		getAllCoursesTextField();
+		File filetoopen = new File(DEGREEREQPATH);
+		engine.deterministicGoal("getDegreeRequirements('"+ filetoopen.getName() + "')");
 		
-		File filetoopen = new File(PREREQPATH);
+		filetoopen = new File(PREREQPATH);
 		engine.deterministicGoal("getPrereq('"+ filetoopen.getName() + "')");
 
 	
@@ -141,8 +143,7 @@ public class COSC422_Project3 {
 	}
 
 	private void getCoursesNeeded() {
-		File filetoopen = new File(DEGREEREQPATH);
-		engine.deterministicGoal("getDegreeRequirements('"+ filetoopen.getName() + "')");
+		
 		
 		TermModel required = nonDeterministicGoal("X", "requiredToTake(X)");
 		TermModel electives = nonDeterministicGoal("X", "electivesToTake(X)");
