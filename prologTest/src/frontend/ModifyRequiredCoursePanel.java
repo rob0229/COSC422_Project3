@@ -25,6 +25,9 @@ public class ModifyRequiredCoursePanel {
 	public void addRequiredCourseButtonActionListener(ActionListener listener) {
 		addRequiredCourseBtn.addActionListener(listener);
 	}
+	public void removeRequiredCourseButtonActionListener(ActionListener listener) {
+		removeRequiredCourseBtn.addActionListener(listener);
+	}
 	private void setLayout(){
 		//modifyRequiredPanel layout
 				modifyRequiredCoursePanel.setBorder(BorderFactory.createLineBorder(Color.black));

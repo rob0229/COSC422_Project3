@@ -65,6 +65,17 @@ public class COSC422_Project3 {
 			}	
 		});		
 	
+		dw.modifyElectivePanel.removeElectiveButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked removeElective BTN "+dw.modifyElectivePanel.modifyElectiveField.getText());
+				engine.deterministicGoal("retract(course("+dw.modifyElectivePanel.modifyElectiveField.getText()+"))");
+				engine.deterministicGoal("retract(degreeElectives("+dw.modifyElectivePanel.modifyElectiveField.getText()+"))");
+				dw.modifyElectivePanel.modifyElectiveField.setText("");
+				getAllCoursesTextField();
+			}
+		});
+
 		dw.modifyRequiredCoursePanel.addRequiredCourseButtonActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -74,7 +85,41 @@ public class COSC422_Project3 {
 				dw.modifyRequiredCoursePanel.modifyRequiredCourseField.setText("");
 				getAllCoursesTextField();
 			}	
-		});		
+		});
+
+		dw.modifyRequiredCoursePanel.removeRequiredCourseButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked removeCourse BTN "+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText());
+				System.out.println(engine.deterministicGoal("retract(course("+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText()+"))"));
+				System.out.println(engine.deterministicGoal("retract(degree("+dw.modifyRequiredCoursePanel.modifyRequiredCourseField.getText()+"))"));
+				dw.modifyRequiredCoursePanel.modifyRequiredCourseField.setText("");
+				getAllCoursesTextField();
+			}	
+		});
+		
+		dw.addTakenCoursePanel.addTakenCourseButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked addTakenCourseButton BTN "+dw.addTakenCoursePanel.addTakenCourseField.getText());
+				System.out.println(engine.deterministicGoal("assert(taken("+dw.addTakenCoursePanel.addTakenCourseField.getText()+"))"));
+				dw.addTakenCoursePanel.addTakenCourseField.setText("");
+
+				ArrayList<String> taken = getNonDeterministicGoalList("X" , "taken(X)", "taken", "getCoursesTaken()");
+				dw.coursesTakenPanel.setCoursesTaken(taken);
+				getCoursesNeeded();
+				getNextSemesterCourses();
+			}	
+		});
+		
+		dw.addFailedCoursePanel.addFailedCourseButtonActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("Clicked addFailedCourseButton BTN "+dw.addFailedCoursePanel.addFailedCourseField.getText());
+				System.out.println(engine.deterministicGoal("assert(failed("+dw.addFailedCoursePanel.addFailedCourseField.getText()+"))"));
+				dw.addFailedCoursePanel.addFailedCourseField.setText("");
+			}	
+		});
 	}
 	
 	private void getNextSemesterCourses() {

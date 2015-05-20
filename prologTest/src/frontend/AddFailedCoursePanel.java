@@ -1,6 +1,7 @@
 package frontend;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -17,6 +18,9 @@ public class AddFailedCoursePanel {
 	
 	public AddFailedCoursePanel(){
 		setLayout();
+	}
+	public void addFailedCourseButtonActionListener(ActionListener listener) {
+		addFailedCourseBtn.addActionListener(listener);
 	}
 	private void setLayout(){
 		//addFailedCourse panel Layout

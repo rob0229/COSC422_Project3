@@ -2,7 +2,6 @@ package frontend;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;

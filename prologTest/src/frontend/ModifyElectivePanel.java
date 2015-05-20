@@ -27,6 +27,9 @@ public class ModifyElectivePanel {
 	public void addElectiveButtonActionListener(ActionListener listener) {
 		addElectiveBtn.addActionListener(listener);
 	}
+	public void removeElectiveButtonActionListener(ActionListener listener) {
+		removeElectiveBtn.addActionListener(listener);
+	}
 	
 	private void setLayout(){
 		//modifyElectivePanel Layout
